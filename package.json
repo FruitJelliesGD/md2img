@@ -1,0 +1,27 @@
+{
+  "name": "md2img",
+  "version": "1.0.0",
+  "description": "Markdown to Image Converter - Edit Markdown and export as images",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
+    "build": "pnpm --filter frontend build && pnpm --filter backend build",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:backend": "pnpm --filter backend dev"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "github-markdown-css": "^5.9.0",
+    "katex": "^0.16.45",
+    "marked-emoji": "^2.0.3",
+    "marked-footnote": "^1.4.0",
+    "marked-katex-extension": "^5.1.8",
+    "playwright": "^1.59.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
