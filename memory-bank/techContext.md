@@ -16,6 +16,8 @@
 | marked | ^15.0.7 | Markdown 解析 |
 | marked-katex-extension | ^5.1.8 | LaTeX 数学公式支持（marked 扩展） |
 | katex | ^0.16.45 | 数学公式渲染引擎 |
+| marked-emoji | ^2.0.3 | Emoji 短代码支持（marked 扩展） |
+| marked-footnote | ^1.4.0 | 脚注支持（marked 扩展） |
 | html-to-image | ^1.11.11 | 前端截图（剪贴板复制） |
 
 ### 后端
@@ -29,10 +31,22 @@
 | marked | ^15.0.7 | Markdown 解析（后端 HTML 生成） |
 | marked-katex-extension | ^5.1.8 | LaTeX 数学公式支持（marked 扩展） |
 | katex | ^0.16.45 | 数学公式渲染引擎 |
+| marked-emoji | ^2.0.3 | Emoji 短代码支持（marked 扩展） |
+| marked-footnote | ^1.4.0 | 脚注支持（marked 扩展） |
 | express-rate-limit | ^7.5.0 | 速率限制 |
 | cors | ^2.8.5 | 跨域支持 |
 | dotenv | ^16.4.7 | 环境变量 |
 | tsx | ^4.19.2 | 开发时 TypeScript 运行 |
+
+### 根目录依赖
+| 技术 | 版本 | 用途 |
+|------|------|------|
+| playwright | ^1.59.1 | Playwright 浏览器安装 |
+| github-markdown-css | ^5.9.0 | GitHub 风格 Markdown CSS |
+| katex | ^0.16.45 | 数学公式渲染引擎 |
+| marked-emoji | ^2.0.3 | Emoji 短代码支持 |
+| marked-footnote | ^1.4.0 | 脚注支持 |
+| marked-katex-extension | ^5.1.8 | LaTeX 数学公式支持 |
 
 ### 开发工具
 | 工具 | 用途 |
@@ -55,9 +69,16 @@
 - 前端 API 地址通过 `VITE_API_URL` 环境变量配置
 - KaTeX CSS 通过 CDN 引入（前端 `index.html` + 后端 `htmlTemplate.ts`）
 - 后端 `marked-katex-extension` 无官方类型声明，需自定义 `.d.ts` 文件
+- 后端 `marked-emoji` 无官方类型声明，需自定义 `.d.ts` 文件
+- 前端 Vite `base: "/md2img/"`（GitHub Pages 子路径部署）
 
 ## 新增文件
 - `backend/src/types/marked-katex-extension.d.ts` — marked-katex-extension 的 TypeScript 类型声明
+- `backend/src/types/marked-emoji.d.ts` — marked-emoji 的 TypeScript 类型声明
+- `frontend/src/utils/emojiDefinitions.ts` — Emoji 短代码映射（125 个）
+- `frontend/src/utils/markdownExtensions.ts` — 自定义 marked 扩展（上标、下标、高亮）
+- `backend/src/utils/emojiDefinitions.ts` — 后端 Emoji 短代码映射（125 个）
+- `backend/src/utils/markdownExtensions.ts` — 后端自定义 marked 扩展
 - `.vscode/settings.json` — VS Code 工作区设置（抑制 `@tailwind` CSS 警告）
 
 ## 已知问题

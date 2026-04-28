@@ -5,12 +5,25 @@ import markedFootnote from "marked-footnote";
 import { markedEmoji } from "marked-emoji";
 import { customMarkdownExtensions } from "../utils/markdownExtensions";
 import { emojiDefinitions } from "../utils/emojiDefinitions";
+import hljs from "highlight.js";
 
 // Configure marked
 marked.setOptions({
   gfm: true,
   breaks: false,
 });
+
+// Custom renderer for code block syntax highlighting
+const renderer = {
+  code({ text, lang }: { text: string; lang?: string; escaped?: boolean }) {
+    const language = lang && hljs.getLanguage(lang) ? lang : "plaintext";
+    const highlighted = hljs.highlight(text, { language }).value;
+    const langClass = `language-${language}`;
+    return `<pre><code class="${langClass}">${highlighted}</code></pre>`;
+  },
+};
+
+marked.use({ renderer });
 
 // Register all extensions
 marked.use(

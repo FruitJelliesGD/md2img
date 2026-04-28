@@ -15,6 +15,11 @@
 │  ┌──────────────────────────────────────┐│
 │  │ useExport → API call / html-to-image ││
 │  └──────────────────────────────────────┘│
+│  ┌──────────────────────────────────────┐│
+│  │ utils/                               ││
+│  │  emojiDefinitions.ts (125 映射)      ││
+│  │  markdownExtensions.ts (上标/下标/高亮)││
+│  └──────────────────────────────────────┘│
 └─────────────────────────────────────────┘
                     │
                     │ HTTP POST /api/convert
@@ -30,6 +35,12 @@
 │  ┌──────────────────────────────────────┐│
 │  │ Screenshot Service (Playwright)      ││
 │  │ → Chromium → Render HTML → Screenshot││
+│  └──────────────────────────────────────┘│
+│  ┌──────────────────────────────────────┐│
+│  │ utils/                               ││
+│  │  htmlTemplate.ts (GitHub 风格 HTML)  ││
+│  │  emojiDefinitions.ts (125 映射)      ││
+│  │  markdownExtensions.ts (上标/下标/高亮)││
 │  └──────────────────────────────────────┘│
 └─────────────────────────────────────────┘
 ```
@@ -49,7 +60,7 @@ Request → CORS → Body Parser → Rate Limit → Auth → Route Handler
 ### 3. 模板引擎模式
 - `htmlTemplate.ts`：根据 markdown + theme + width 生成完整 HTML 页面
 - 内联 CSS（GitHub 风格）+ KaTeX CSS（CDN 引入）
-- marked 配置 `marked-katex-extension` 支持 LaTeX 数学公式渲染
+- marked 配置链：`marked-katex-extension` + `marked-emoji` + `marked-footnote` + 自定义扩展
 
 ### 4. 浏览器实例复用模式
 - Playwright 浏览器实例全局复用（`browserInstance`）
@@ -59,6 +70,12 @@ Request → CORS → Body Parser → Rate Limit → Auth → Route Handler
 - 父子组件：Props + Emits（单向数据流）
 - 跨组件：`previewRef` 通过 `defineExpose` 暴露 DOM 元素
 - 全局状态：composable 单例（theme）
+
+### 6. Markdown 扩展注册模式（前后端共享）
+- 前端 `useMarkdown.ts` 和后端 `htmlTemplate.ts` 使用相同的扩展注册链
+- `markdownExtensions.ts`：自定义 marked 扩展（上标、下标、高亮）
+- `emojiDefinitions.ts`：125 个 Emoji 短代码映射
+- 扩展注册顺序：KaTeX → Emoji → Footnote → 自定义扩展
 
 ## 组件关系
 ```
@@ -74,7 +91,7 @@ App.vue
 
 ## 数据流
 ```
-用户输入 → markdown ref → useMarkdown（marked + KaTeX）→ renderedHtml → Preview
+用户输入 → markdown ref → useMarkdown（marked + KaTeX + Emoji + Footnote + 自定义扩展）→ renderedHtml → Preview
                 ↓
          useExport → POST /api/convert → 下载图片
                 ↓

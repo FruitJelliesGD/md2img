@@ -14,12 +14,23 @@
 - **MCP Server**：AI Agent 可通过 MCP 协议调用 md2img 能力
 - **可配置认证与配额**：通过环境变量灵活控制
 
+### 📝 Markdown 扩展语法
+
+| 语法 | 说明 | 示例 |
+|------|------|------|
+| `$...$` / `$$...$$` | LaTeX 数学公式 | `$E=mc^2$` → E=mc² |
+| `:emoji_name:` | Emoji 短代码（125+） | `:rocket:` → 🚀 |
+| `[^1]` / `[^1]:` | 脚注 | `Text[^1]` + `[^1]: Note` |
+| `X^2^` | 上标 | `X^2^` → X² |
+| `H~2~O` | 下标 | `H~2~O` → H₂O |
+| `==text==` | 高亮 | `==highlight==` → highlight |
+
 ## 🛠 技术栈
 
 | 层级 | 技术 |
 |------|------|
 | 前端 | Vue 3 + Vite + Tailwind CSS + CodeMirror 6 |
-| Markdown 解析 | marked + KaTeX（数学公式） |
+| Markdown 解析 | marked + KaTeX（数学公式）+ marked-emoji（Emoji）+ marked-footnote（脚注）+ 自定义扩展（上标/下标/高亮） |
 | 前端截图 | html-to-image（纯浏览器端） |
 | 后端截图 | Playwright (playwright-core + @sparticuz/chromium) |
 | 后端 | Node.js + Express |
@@ -241,9 +252,20 @@ docker run -p 3000:3000 md2img-backend
 
 ```
 md2img/
-├── frontend/          # Vue 3 前端（纯静态，无需后端）
-├── backend/           # Express 后端（Playwright 截图 API）
-├── mcp-server/        # MCP Server（AI Agent 接入）
+├── frontend/              # Vue 3 前端（纯静态，无需后端）
+│   └── src/
+│       ├── components/    # UI 组件（Editor、Preview、Toolbar 等）
+│       ├── composables/   # 组合式函数（useTheme、useMarkdown、useExport）
+│       └── utils/         # Markdown 扩展（Emoji 映射、自定义扩展）
+├── backend/               # Express 后端（Playwright 截图 API）
+│   └── src/
+│       ├── routes/        # API 路由（/api/convert、/health）
+│       ├── middleware/     # 认证、速率限制
+│       ├── services/      # Playwright 截图服务
+│       ├── utils/         # HTML 模板、Emoji 映射、Markdown 扩展
+│       └── types/         # TypeScript 类型声明
+├── mcp-server/            # MCP Server（AI Agent 接入）
+├── memory-bank/           # 项目记忆库文档
 ├── pnpm-workspace.yaml
 ├── package.json
 ├── docker-compose.yml

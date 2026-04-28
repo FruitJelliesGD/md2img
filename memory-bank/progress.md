@@ -1,7 +1,7 @@
 # Progress: md2img
 
 ## 当前状态
-项目初始构建完成，前端构建验证通过，LaTeX 数学公式支持已添加。
+项目初始构建完成，前端构建验证通过，LaTeX 数学公式、Emoji 短代码、脚注、上标/下标/高亮等 Markdown 扩展功能均已实现，README 和记忆库文档已同步更新。
 
 ## ✅ 已完成
 
@@ -48,8 +48,20 @@
 - [x] 前端构建验证通过（vue-tsc + vite build）
 - [x] 后端加载验证通过（tsx watch 正常启动）
 
-### 阶段六：开发环境优化
+### 阶段六：Markdown 扩展功能
+- [x] 安装 `marked-emoji` + `marked-footnote` 依赖
+- [x] 创建 `emojiDefinitions.ts`（125 个 Emoji 短代码映射）— 前后端各一份
+- [x] 创建 `markdownExtensions.ts`（自定义上标、下标、高亮扩展）— 前后端各一份
+- [x] 前端 `useMarkdown.ts` 注册 Emoji + Footnote + 自定义扩展
+- [x] 后端 `htmlTemplate.ts` 注册 Emoji + Footnote + 自定义扩展
+- [x] 创建 `backend/src/types/marked-emoji.d.ts` 类型声明
+
+### 阶段七：开发环境优化
 - [x] 创建 `.vscode/settings.json`，设置 `css.lint.unknownAtRules: "ignore"` 抑制 `@tailwind` 未知规则警告
+
+### 阶段八：文档同步更新
+- [x] 更新 README.md：补充 Markdown 扩展语法表格、技术栈更新、项目结构细化
+- [x] 更新记忆库所有文件（projectbrief、productContext、activeContext、systemPatterns、techContext、progress）
 
 ## ⏳ 待完成
 
