@@ -98,14 +98,14 @@ importers:
         specifier: ^15.0.7
         version: 15.0.12
       marked-emoji:
-        specifier: ^1.0.0
-        version: 1.4.3(marked@15.0.12)
+        specifier: ^2.0.0
+        version: 2.0.3(marked@15.0.12)
       marked-footnote:
         specifier: ^1.0.0
         version: 1.4.0(marked@15.0.12)
       marked-katex-extension:
-        specifier: ^1.0.0
-        version: 1.0.2(marked@15.0.12)
+        specifier: ^5.0.0
+        version: 5.1.8(katex@0.16.45)(marked@15.0.12)
       vue:
         specifier: ^3.5.13
         version: 3.5.33(typescript@5.9.3)
@@ -1463,11 +1463,6 @@ packages:
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
-  marked-emoji@1.4.3:
-    resolution: {integrity: sha512-HDZx1VOmzu7XT2QNKWfrHGbNRMTWKj9XD78yrcH1madD30HpGLMODPOmKr/e7CA7NKKXkpXXNdndQn++ysXmHg==}
-    peerDependencies:
-      marked: '>=4 <16'
-
   marked-emoji@2.0.3:
     resolution: {integrity: sha512-fChW/AfUqCHgoEC1nFDgiw3OR/qsi71/QXH/HTo05yd6B5+T+VHh1SqCpn/HpeGLDxkA+MK4+hr4eULB2/A8Jw==}
     peerDependencies:
@@ -1477,11 +1472,6 @@ packages:
     resolution: {integrity: sha512-fZTxAhI1TcLEs5UOjCfYfTHpyKGaWQevbxaGTEA68B51l7i87SctPFtHETYqPkEN0ka5opvy4Dy1l/yXVC+hmg==}
     peerDependencies:
       marked: '>=7.0.0'
-
-  marked-katex-extension@1.0.2:
-    resolution: {integrity: sha512-u1CZeGzH0loLPgrp/QgNNREJsJMHIixGLh5uALbBOkG7PpT7Ro8QmM3gZL4JxVz6JnkuVWwQQK2wNQqJxUnsZw==}
-    peerDependencies:
-      marked: ^4.2.4
 
   marked-katex-extension@5.1.8:
     resolution: {integrity: sha512-TsV9OCHHDjVBf4IH0RSjLs4Eqsjj8HGfmVCKlimrS391EtBBxzXj2gBYdF9tY7f7oXu9tb1kHV86ExJsG3iMhw==}
@@ -3457,21 +3447,12 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  marked-emoji@1.4.3(marked@15.0.12):
-    dependencies:
-      marked: 15.0.12
-
   marked-emoji@2.0.3(marked@15.0.12):
     dependencies:
       marked: 15.0.12
 
   marked-footnote@1.4.0(marked@15.0.12):
     dependencies:
-      marked: 15.0.12
-
-  marked-katex-extension@1.0.2(marked@15.0.12):
-    dependencies:
-      katex: 0.16.45
       marked: 15.0.12
 
   marked-katex-extension@5.1.8(katex@0.16.45)(marked@15.0.12):
