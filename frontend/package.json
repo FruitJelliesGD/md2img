@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "md2img frontend - Markdown to Image Editor",
   "type": "module",
   "scripts": {
@@ -17,6 +17,7 @@
     "@codemirror/view": "^6.35.0",
     "codemirror": "^6.0.1",
     "highlight.js": "^11.11.1",
+    "@md2img/shared": "workspace:*",
     "html-to-image": "^1.11.11",
     "marked": "^15.0.7",
     "marked-emoji": "^2.0.0",

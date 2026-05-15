@@ -55,7 +55,7 @@ export async function takeScreenshot(options: ScreenshotOptions): Promise<Screen
 
   const browser = await getBrowser();
   const context = await browser.newContext({
-    viewport: { width, height: 800 },
+    viewport: { width, height: 1080 },
     deviceScaleFactor,
   });
 
@@ -67,22 +67,22 @@ export async function takeScreenshot(options: ScreenshotOptions): Promise<Screen
     // Set the HTML content
     await page.setContent(html, { waitUntil: "networkidle" });
 
-    // Wait for fonts and layout to settle
-    await page.waitForTimeout(100);
+    // Wait for fonts (including KaTeX) and layout to settle
+    await page.evaluate(() => document.fonts.ready);
+    await page.waitForTimeout(300);
 
     // Get the full page height by measuring the body
     const bodyHandle = await page.$("body");
     const boundingBox = await bodyHandle?.boundingBox();
 
-    const clipWidth = width;
-    const clipHeight = boundingBox ? Math.ceil(boundingBox.height) : 800;
+    const clipHeight = boundingBox ? Math.ceil(boundingBox.height) : 1080;
 
     // Take a full-page screenshot with clip
     const screenshotOptions: Record<string, unknown> = {
       clip: {
         x: 0,
         y: 0,
-        width: clipWidth,
+        width,
         height: clipHeight,
       },
       type: format,

@@ -190,7 +190,15 @@ async function handleCopy() {
       showToast("无法获取预览元素", "error");
       return;
     }
-    await copyToClipboard(previewEl, theme.value);
+    await copyToClipboard(
+      previewEl,
+      {
+        format: exportFormat.value,
+        width: exportWidth.value,
+        quality: exportQuality.value,
+      },
+      theme.value
+    );
     showToast("已复制到剪贴板", "success");
   } catch (e) {
     showToast("复制失败：" + (e instanceof Error ? e.message : "未知错误"), "error");

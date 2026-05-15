@@ -5,6 +5,7 @@
     :class="theme === 'dark' ? 'bg-[#0d1117]' : 'bg-white'"
   >
     <div
+      ref="contentRef"
       class="markdown-body mx-auto"
       :class="theme === 'dark' ? 'markdown-body-dark' : 'markdown-body-light'"
       v-html="html"
@@ -21,8 +22,18 @@ defineProps<{
 }>();
 
 const previewRef = ref<HTMLDivElement | null>(null);
+const contentRef = ref<HTMLDivElement | null>(null);
 
 defineExpose({
+  /**
+   * Returns the outer scrollable container.
+   * Capturing this element requires unconstraining its height first.
+   */
   getPreviewElement: () => previewRef.value,
+  /**
+   * Returns the inner content element (.markdown-body).
+   * This element naturally expands to full content height.
+   */
+  getContentElement: () => contentRef.value,
 });
 </script>

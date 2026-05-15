@@ -3,8 +3,7 @@ import { marked } from "marked";
 import markedKatex from "marked-katex-extension";
 import markedFootnote from "marked-footnote";
 import { markedEmoji } from "marked-emoji";
-import { customMarkdownExtensions } from "../utils/markdownExtensions";
-import { emojiDefinitions } from "../utils/emojiDefinitions";
+import { customMarkdownExtensions, emojiDefinitions } from "@md2img/shared";
 import hljs from "highlight.js";
 
 // Configure marked

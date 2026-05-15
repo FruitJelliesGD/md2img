@@ -2,8 +2,7 @@ import { marked } from "marked";
 import markedKatex from "marked-katex-extension";
 import markedFootnote from "marked-footnote";
 import { markedEmoji } from "marked-emoji";
-import { customMarkdownExtensions } from "./markdownExtensions";
-import { emojiDefinitions } from "./emojiDefinitions";
+import { customMarkdownExtensions, emojiDefinitions } from "@md2img/shared";
 
 // Register all extensions
 marked.use(

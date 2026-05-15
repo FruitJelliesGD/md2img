@@ -14,6 +14,93 @@ export function useExport() {
   const error = ref<string | null>(null);
 
   /**
+   * Temporarily remove height constraints so html-to-image captures
+   * the full content instead of only the visible viewport of a
+   * scrollable container. Returns a restore function.
+   */
+  function unconstrainElement(el: HTMLElement): () => void {
+    const origHeight = el.style.height;
+    const origOverflow = el.style.overflow;
+    const origMaxHeight = el.style.maxHeight;
+
+    const fullHeight = el.scrollHeight;
+    el.style.height = `${fullHeight}px`;
+    el.style.overflow = "visible";
+    el.style.maxHeight = "none";
+    // Force reflow so computed styles pick up the new height
+    void el.offsetHeight;
+
+    return () => {
+      el.style.height = origHeight;
+      el.style.overflow = origOverflow;
+      el.style.maxHeight = origMaxHeight;
+    };
+  }
+
+  /**
+   * Shared capture logic used by both download and copy.
+   */
+  async function captureImage(
+    element: HTMLElement,
+    options: ExportOptions,
+    theme: "light" | "dark"
+  ): Promise<Blob> {
+    const isDark = theme === "dark";
+    const bgColor = isDark ? "#0d1117" : "#ffffff";
+
+    // Set export width
+    const origWidth = element.style.width;
+    const origMinWidth = element.style.minWidth;
+    element.style.width = `${options.width}px`;
+    element.style.minWidth = `${options.width}px`;
+
+    // Unconstrain height so the full content is captured
+    const restoreHeight = unconstrainElement(element);
+
+    try {
+      if (options.format === "png") {
+        const dataUrl = await toPng(element, {
+          pixelRatio: 2,
+          backgroundColor: bgColor,
+        });
+        const resp = await fetch(dataUrl);
+        return resp.blob();
+      }
+
+      if (options.format === "jpeg") {
+        const dataUrl = await toJpeg(element, {
+          pixelRatio: 2,
+          quality: options.quality,
+          backgroundColor: bgColor,
+        });
+        const resp = await fetch(dataUrl);
+        return resp.blob();
+      }
+
+      // WebP — use canvas then convert to blob
+      const canvas = await toCanvas(element, {
+        pixelRatio: 2,
+        backgroundColor: bgColor,
+      });
+      return new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob(
+          (b) => {
+            if (b) resolve(b);
+            else reject(new Error("Failed to convert canvas to WebP blob"));
+          },
+          "image/webp",
+          options.quality,
+        );
+      });
+    } finally {
+      // Restore both width and height changes
+      element.style.width = origWidth;
+      element.style.minWidth = origMinWidth;
+      restoreHeight();
+    }
+  }
+
+  /**
    * Download image using html-to-image (pure frontend, no backend needed).
    * Supports PNG, JPEG, and WebP formats with 2x pixel ratio.
    */
@@ -26,77 +113,17 @@ export function useExport() {
     error.value = null;
 
     try {
-      const isDark = theme === "dark";
-      const bgColor = isDark ? "#0d1117" : "#ffffff";
+      const blob = await captureImage(element, options, theme);
 
-      // Temporarily set the element to the desired export width
-      const originalWidth = element.style.width;
-      const originalMinWidth = element.style.minWidth;
-      element.style.width = `${options.width}px`;
-      element.style.minWidth = `${options.width}px`;
-
-      try {
-        let blob: Blob;
-
-        if (options.format === "png") {
-          const dataUrl = await toPng(element, {
-            pixelRatio: 2,
-            backgroundColor: bgColor,
-            style: {
-              transform: "scale(1)",
-              transformOrigin: "top left",
-            },
-          });
-          const response = await fetch(dataUrl);
-          blob = await response.blob();
-        } else if (options.format === "jpeg") {
-          const dataUrl = await toJpeg(element, {
-            pixelRatio: 2,
-            quality: options.quality,
-            backgroundColor: bgColor,
-            style: {
-              transform: "scale(1)",
-              transformOrigin: "top left",
-            },
-          });
-          const response = await fetch(dataUrl);
-          blob = await response.blob();
-        } else {
-          // WebP: use toCanvas then convert to blob
-          const canvas = await toCanvas(element, {
-            pixelRatio: 2,
-            backgroundColor: bgColor,
-            style: {
-              transform: "scale(1)",
-              transformOrigin: "top left",
-            },
-          });
-          blob = await new Promise<Blob>((resolve, reject) => {
-            canvas.toBlob(
-              (b) => {
-                if (b) resolve(b);
-                else reject(new Error("Failed to convert canvas to WebP blob"));
-              },
-              "image/webp",
-              options.quality
-            );
-          });
-        }
-
-        // Trigger download
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `markdown.${options.format}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      } finally {
-        // Restore original element width
-        element.style.width = originalWidth;
-        element.style.minWidth = originalMinWidth;
-      }
+      // Trigger download
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `markdown.${options.format}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     } catch (e) {
       error.value = e instanceof Error ? e.message : "Export failed";
       throw e;
@@ -110,26 +137,14 @@ export function useExport() {
    */
   async function copyToClipboard(
     element: HTMLElement,
+    options: ExportOptions,
     theme: "light" | "dark"
   ): Promise<void> {
     isExporting.value = true;
     error.value = null;
 
     try {
-      const isDark = theme === "dark";
-      const bgColor = isDark ? "#0d1117" : "#ffffff";
-
-      const dataUrl = await toPng(element, {
-        pixelRatio: 2,
-        backgroundColor: bgColor,
-        style: {
-          transform: "scale(1)",
-          transformOrigin: "top left",
-        },
-      });
-
-      const response = await fetch(dataUrl);
-      const blob = await response.blob();
+      const blob = await captureImage(element, options, theme);
 
       await navigator.clipboard.write([
         new ClipboardItem({ "image/png": blob }),

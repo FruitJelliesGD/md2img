@@ -73,9 +73,6 @@ pnpm --filter frontend build
 
 # 构建后端
 pnpm --filter backend build
-
-# 构建 MCP Server
-pnpm --filter md2img-mcp-server build
 ```
 
 ## 📡 使用方式
@@ -114,47 +111,6 @@ response = requests.post(
 )
 with open('output.png', 'wb') as f:
     f.write(response.content)
-```
-
-### 3. MCP Server（AI Agent 调用）
-
-MCP Server 让 AI Agent（如 Cline）可以通过 MCP 协议调用 md2img，将 Markdown 转换为图片。
-
-#### 安装 MCP Server
-
-```bash
-# 构建 MCP Server
-pnpm --filter md2img-mcp-server build
-```
-
-#### 配置 MCP
-
-在 Cline 的 MCP 设置文件中添加（`cline_mcp_settings.json`）：
-
-```json
-{
-  "mcpServers": {
-    "md2img": {
-      "command": "node",
-      "args": ["path/to/md2img/mcp-server/dist/index.js"],
-      "env": {
-        "MD2IMG_API_URL": "http://localhost:3000"
-      }
-    }
-  }
-}
-```
-
-#### Agent 使用示例
-
-配置完成后，AI Agent 可以直接调用 `md2img` 工具：
-
-```
-Agent: 将以下 Markdown 转换为图片：
-# Hello World
-This is **bold** text.
-
-→ 调用 md2img 工具 → 返回 PNG 图片
 ```
 
 ## 📡 API 文档
@@ -209,12 +165,6 @@ Authorization: Bearer <API_KEY>  # 仅在 AUTH_ENABLED=true 时需要
 | SERVERLESS | false | Serverless 模式（使用 @sparticuz/chromium） |
 | CHROMIUM_PATH | - | 自定义 Chromium 路径 |
 
-### MCP Server
-
-| 变量 | 默认值 | 说明 |
-|------|--------|------|
-| MD2IMG_API_URL | http://localhost:3000 | 后端 API 地址 |
-
 ## 🐳 Docker 部署
 
 ```bash
@@ -255,20 +205,19 @@ md2img/
 ├── frontend/              # Vue 3 前端（纯静态，无需后端）
 │   └── src/
 │       ├── components/    # UI 组件（Editor、Preview、Toolbar 等）
-│       ├── composables/   # 组合式函数（useTheme、useMarkdown、useExport）
-│       └── utils/         # Markdown 扩展（Emoji 映射、自定义扩展）
+│       └── composables/   # 组合式函数（useTheme、useMarkdown、useExport）
 ├── backend/               # Express 后端（Playwright 截图 API）
 │   └── src/
 │       ├── routes/        # API 路由（/api/convert、/health）
 │       ├── middleware/     # 认证、速率限制
 │       ├── services/      # Playwright 截图服务
-│       ├── utils/         # HTML 模板、Emoji 映射、Markdown 扩展
+│       ├── utils/         # HTML 模板生成
 │       └── types/         # TypeScript 类型声明
-├── mcp-server/            # MCP Server（AI Agent 接入）
+├── packages/shared/       # 共享工具（Emoji 映射、Markdown 扩展）
 ├── memory-bank/           # 项目记忆库文档
 ├── pnpm-workspace.yaml
-├── package.json
 ├── docker-compose.yml
+├── package.json
 └── README.md
 ```
 
