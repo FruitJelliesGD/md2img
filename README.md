@@ -1,5 +1,7 @@
 # md2img — Markdown to Image Converter
 
+> 🌐 [English](README.en.md) | 中文
+
 将 Markdown 实时编辑并导出为高质量图片的开源工具。
 
 ## ✨ 功能特性
@@ -218,7 +220,8 @@ md2img/
 ├── pnpm-workspace.yaml
 ├── docker-compose.yml
 ├── package.json
-└── README.md
+├── README.md              # 中文文档（主）
+└── README.en.md           # 英文文档（辅）
 ```
 
 ## 📄 许可证
