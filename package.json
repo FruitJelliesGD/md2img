@@ -1,6 +1,6 @@
 {
   "name": "md2img",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Markdown to Image Converter - Edit Markdown and export as images",
   "private": true,
   "scripts": {

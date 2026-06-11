@@ -58,7 +58,7 @@ export async function takeScreenshot(options: ScreenshotOptions): Promise<Screen
 
   const browser = await getBrowser();
   const context = await browser.newContext({
-    viewport: { width, height: 800 },
+    viewport: { width, height: 1080 },
     deviceScaleFactor,
   });
 
@@ -74,14 +74,13 @@ export async function takeScreenshot(options: ScreenshotOptions): Promise<Screen
     const bodyHandle = await page.$("body");
     const boundingBox = await bodyHandle?.boundingBox();
 
-    const clipWidth = width;
-    const clipHeight = boundingBox ? Math.ceil(boundingBox.height) : 800;
+    const clipHeight = boundingBox ? Math.ceil(boundingBox.height) : 1080;
 
     const screenshotOptions: Record<string, unknown> = {
       clip: {
         x: 0,
         y: 0,
-        width: clipWidth,
+        width,
         height: clipHeight,
       },
       type: format,

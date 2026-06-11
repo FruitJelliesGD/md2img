@@ -90,6 +90,7 @@ export function useExport() {
 
   async function copyToClipboard(
     element: HTMLElement,
+    options: ExportOptions,
     theme: "light" | "dark"
   ): Promise<void> {
     isExporting.value = true;
