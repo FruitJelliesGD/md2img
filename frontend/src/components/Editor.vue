@@ -1,5 +1,8 @@
 <template>
-  <div ref="editorContainer" class="h-full w-full overflow-hidden"></div>
+  <div
+    ref="editorContainer"
+    class="h-full w-full overflow-hidden"
+  />
 </template>
 
 <script setup lang="ts">

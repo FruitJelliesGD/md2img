@@ -38,7 +38,7 @@
         class="resizer"
         :class="{ active: isResizing }"
         @mousedown="startResize"
-      ></div>
+      />
 
       <!-- Preview panel -->
       <div
@@ -54,7 +54,10 @@
     </div>
 
     <!-- Status bar -->
-    <StatusBar :stats="stats" :theme="theme" />
+    <StatusBar
+      :stats="stats"
+      :theme="theme"
+    />
 
     <!-- API Doc Modal -->
     <ApiDocModal
