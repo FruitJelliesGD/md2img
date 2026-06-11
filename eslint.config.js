@@ -8,12 +8,18 @@ export default [
   ...pluginVue.configs["flat/recommended"],
   {
     files: ["**/*.{ts,vue}"],
+    languageOptions: {
+      parserOptions: {
+        parser: tseslint.parser,
+      },
+    },
     rules: {
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-explicit-any": "off",
       "vue/multi-word-component-names": "off",
     },
   },
   {
-    ignores: ["**/dist/**", "**/node_modules/**", "**/*.js"],
+    ignores: ["**/dist/**", "**/node_modules/**", "**/*.js", "frontend/env.d.ts"],
   },
 ];

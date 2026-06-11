@@ -1,5 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { Router, type Request, type Response } from "express";
+import { describe, it, expect, vi } from "vitest";
 
 // Mock modules
 vi.mock("../utils/htmlTemplate", () => ({
