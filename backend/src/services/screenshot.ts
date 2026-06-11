@@ -1,37 +1,43 @@
 import { chromium, type Browser, type Page } from "playwright-core";
 
 let browserInstance: Browser | null = null;
+let browserPromise: Promise<Browser> | null = null;
 
-/**
- * Get or create a shared Chromium browser instance.
- * Supports both local development (full playwright) and serverless (@sparticuz/chromium).
- */
-async function getBrowser(): Promise<Browser> {
-  if (browserInstance && browserInstance.isConnected()) {
-    return browserInstance;
-  }
-
+async function launchBrowser(): Promise<Browser> {
   const isServerless = process.env.SERVERLESS === "true";
 
   if (isServerless) {
-    // Serverless environment: use @sparticuz/chromium
     const chromiumModule = await import("@sparticuz/chromium");
     const chromiumPkg = chromiumModule.default || chromiumModule;
-    browserInstance = await chromium.launch({
+    return chromium.launch({
       args: chromiumPkg.args,
       executablePath: await chromiumPkg.executablePath(),
       headless: true,
     });
-  } else {
-    // Local development: use system-installed or bundled Chromium
-    const executablePath = process.env.CHROMIUM_PATH || undefined;
-    browserInstance = await chromium.launch({
-      headless: true,
-      executablePath,
-    });
   }
 
-  return browserInstance;
+  const executablePath = process.env.CHROMIUM_PATH || undefined;
+  return chromium.launch({
+    headless: true,
+    executablePath,
+  });
+}
+
+async function getBrowser(): Promise<Browser> {
+  if (browserInstance && browserInstance.isConnected()) {
+    return browserInstance;
+  }
+  if (!browserPromise) {
+    browserPromise = launchBrowser()
+      .then((b) => {
+        browserInstance = b;
+        return b;
+      })
+      .finally(() => {
+        browserPromise = null;
+      });
+  }
+  return browserPromise;
 }
 
 export interface ScreenshotOptions {
@@ -46,9 +52,6 @@ export interface ScreenshotResult {
   contentType: string;
 }
 
-/**
- * Render HTML to an image using Playwright.
- */
 export async function takeScreenshot(options: ScreenshotOptions): Promise<ScreenshotResult> {
   const { html, width, format, quality } = options;
   const deviceScaleFactor = 2;
@@ -64,20 +67,16 @@ export async function takeScreenshot(options: ScreenshotOptions): Promise<Screen
   try {
     page = await context.newPage();
 
-    // Set the HTML content
     await page.setContent(html, { waitUntil: "networkidle" });
 
-    // Wait for fonts and layout to settle
-    await page.waitForTimeout(100);
+    await page.evaluate(() => document.fonts.ready);
 
-    // Get the full page height by measuring the body
     const bodyHandle = await page.$("body");
     const boundingBox = await bodyHandle?.boundingBox();
 
     const clipWidth = width;
     const clipHeight = boundingBox ? Math.ceil(boundingBox.height) : 800;
 
-    // Take a full-page screenshot with clip
     const screenshotOptions: Record<string, unknown> = {
       clip: {
         x: 0,
@@ -92,7 +91,12 @@ export async function takeScreenshot(options: ScreenshotOptions): Promise<Screen
       screenshotOptions.quality = Math.round(quality * 100);
     }
 
-    const buffer = await page.screenshot(screenshotOptions) as Buffer;
+    const buffer = await Promise.race([
+      page.screenshot(screenshotOptions) as Promise<Buffer>,
+      new Promise<Buffer>((_, reject) =>
+        setTimeout(() => reject(new Error("Screenshot timed out after 30s")), 30_000)
+      ),
+    ]);
 
     const contentTypes: Record<string, string> = {
       png: "image/png",
@@ -112,9 +116,6 @@ export async function takeScreenshot(options: ScreenshotOptions): Promise<Screen
   }
 }
 
-/**
- * Close the browser instance (for cleanup).
- */
 export async function closeBrowser(): Promise<void> {
   if (browserInstance) {
     await browserInstance.close();

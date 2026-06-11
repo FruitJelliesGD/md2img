@@ -10,8 +10,8 @@ export function createRateLimiter() {
     return (_req: any, _res: any, next: any) => next();
   }
 
-  const max = parseInt(process.env.RATE_LIMIT_MAX || "60", 10);
-  const windowMs = parseInt(process.env.RATE_LIMIT_WINDOW_MS || "60000", 10);
+  const max = parseInt(process.env.RATE_LIMIT_MAX || "60", 10) || 60;
+  const windowMs = parseInt(process.env.RATE_LIMIT_WINDOW_MS || "60000", 10) || 60000;
 
   return rateLimit({
     windowMs,

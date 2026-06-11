@@ -1,19 +1,11 @@
 import { ref, computed, watch } from "vue";
 import { marked } from "marked";
-import markedKatex from "marked-katex-extension";
-import markedFootnote from "marked-footnote";
-import { markedEmoji } from "marked-emoji";
-import { customMarkdownExtensions } from "../utils/markdownExtensions";
-import { emojiDefinitions } from "../utils/emojiDefinitions";
+import DOMPurify from "dompurify";
 import hljs from "highlight.js";
+import { configureMarked } from "@md2img/shared";
 
-// Configure marked
-marked.setOptions({
-  gfm: true,
-  breaks: false,
-});
+configureMarked();
 
-// Custom renderer for code block syntax highlighting
 const renderer = {
   code({ text, lang }: { text: string; lang?: string; escaped?: boolean }) {
     const language = lang && hljs.getLanguage(lang) ? lang : "plaintext";
@@ -25,25 +17,14 @@ const renderer = {
 
 marked.use({ renderer });
 
-// Register all extensions
-marked.use(
-  markedKatex({
-    throwOnError: false,
-    displayMode: false,
-  }),
-  markedFootnote({}),
-  markedEmoji({ emojis: emojiDefinitions } as any),
-  customMarkdownExtensions
-);
-
-export function useMarkdown(source: () => string) {
+export function useMarkdown(source: () => string, options?: { debounceMs?: number }) {
   const html = ref("");
+  const debounceMs = options?.debounceMs ?? 200;
 
-  // Debounced update
   let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   const updateHtml = () => {
-    html.value = marked.parse(source()) as string;
+    html.value = DOMPurify.sanitize(marked.parse(source()) as string);
   };
 
   watch(
@@ -52,12 +33,11 @@ export function useMarkdown(source: () => string) {
       if (debounceTimer) {
         clearTimeout(debounceTimer);
       }
-      debounceTimer = setTimeout(updateHtml, 200);
+      debounceTimer = setTimeout(updateHtml, debounceMs);
     },
     { immediate: true }
   );
 
-  // Stats
   const stats = computed(() => {
     const text = source();
     const lines = text.split("\n").length;

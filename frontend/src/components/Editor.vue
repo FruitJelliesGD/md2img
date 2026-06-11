@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 import { EditorView, keymap, lineNumbers, highlightActiveLine, highlightActiveLineGutter } from "@codemirror/view";
-import { EditorState } from "@codemirror/state";
+import { EditorState, Compartment } from "@codemirror/state";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
@@ -22,6 +22,7 @@ const emit = defineEmits<{
 
 const editorContainer = ref<HTMLDivElement | null>(null);
 let editorView: EditorView | null = null;
+const themeCompartment = new Compartment();
 
 function createTheme(dark: boolean) {
   return EditorView.theme({
@@ -84,7 +85,7 @@ function createEditor() {
       syntaxHighlighting(defaultHighlightStyle),
       markdown({ base: markdownLanguage, codeLanguages: languages }),
       keymap.of([...defaultKeymap, ...historyKeymap]),
-      createTheme(props.theme === "dark"),
+      themeCompartment.of(createTheme(props.theme === "dark")),
       updateListener,
       EditorView.lineWrapping,
     ],
@@ -96,49 +97,17 @@ function createEditor() {
   });
 }
 
-// Watch for theme changes — destroy and recreate editor with new theme
 watch(
   () => props.theme,
-  () => {
+  (newTheme) => {
     if (editorView) {
-      const currentContent = editorView.state.doc.toString();
-      editorView.destroy();
-      editorView = null;
-      // Recreate with current content
-      if (editorContainer.value) {
-        const updateListener = EditorView.updateListener.of((update) => {
-          if (update.docChanged) {
-            emit("update:modelValue", update.state.doc.toString());
-          }
-        });
-
-        const state = EditorState.create({
-          doc: currentContent,
-          extensions: [
-            lineNumbers(),
-            highlightActiveLine(),
-            highlightActiveLineGutter(),
-            history(),
-            bracketMatching(),
-            syntaxHighlighting(defaultHighlightStyle),
-            markdown({ base: markdownLanguage, codeLanguages: languages }),
-            keymap.of([...defaultKeymap, ...historyKeymap]),
-            createTheme(props.theme === "dark"),
-            updateListener,
-            EditorView.lineWrapping,
-          ],
-        });
-
-        editorView = new EditorView({
-          state,
-          parent: editorContainer.value,
-        });
-      }
+      editorView.dispatch({
+        effects: themeCompartment.reconfigure(createTheme(newTheme === "dark")),
+      });
     }
   }
 );
 
-// Watch for external content changes
 watch(
   () => props.modelValue,
   (newValue) => {

@@ -2,14 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global styles */
 html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
-/* CodeMirror editor styles */
 .cm-editor {
   height: 100%;
   font-size: 14px;
@@ -19,24 +17,46 @@ html, body, #app {
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
-/* Light theme CodeMirror */
-.cm-editor.cm-theme-light {
-  background-color: #ffffff;
-  color: #1f2328;
+/* CSS variables for markdown themes */
+:root {
+  --md-text: #1f2328;
+  --md-bg: #ffffff;
+  --md-link: #0969da;
+  --md-border: #d1d9e0;
+  --md-muted: #636c76;
+  --md-code-bg: rgba(175, 184, 193, 0.2);
+  --md-pre-bg: #f6f8fa;
+  --md-kbd-bg: #fafbfc;
+  --md-mark-bg: #fff8c5;
+  --md-table-header-bg: #f6f8fa;
+  --cm-bg: #ffffff;
+  --cm-text: #1f2328;
 }
 
-/* Dark theme CodeMirror */
-.cm-editor.cm-theme-dark {
-  background-color: #0d1117;
-  color: #e6edf3;
+.dark {
+  --md-text: #e6edf3;
+  --cm-bg: #0d1117;
+  --cm-text: #e6edf3;
+  --md-bg: #0d1117;
+  --md-link: #4493f8;
+  --md-border: #30363d;
+  --md-muted: #8b949e;
+  --md-code-bg: rgba(110, 118, 129, 0.4);
+  --md-pre-bg: #161b22;
+  --md-kbd-bg: #161b22;
+  --md-mark-bg: #3b2e00;
+  --md-table-header-bg: #161b22;
 }
 
-/* GitHub Markdown CSS styles for preview */
+.cm-editor { background-color: var(--cm-bg); color: var(--cm-text); }
+
 .markdown-body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
+  color: var(--md-text);
+  background-color: var(--md-bg);
 }
 
 .markdown-body h1,
@@ -51,41 +71,19 @@ html, body, #app {
   line-height: 1.25;
 }
 
-.markdown-body h1 {
-  font-size: 2em;
-  padding-bottom: 0.3em;
-}
-
-.markdown-body h2 {
-  font-size: 1.5em;
-  padding-bottom: 0.3em;
-}
-
-.markdown-body h3 {
-  font-size: 1.25em;
-}
-
-.markdown-body h4 {
-  font-size: 1em;
-}
-
-.markdown-body p {
-  margin-top: 0;
-  margin-bottom: 16px;
-}
-
-.markdown-body a {
-  text-decoration: none;
-}
-
-.markdown-body a:hover {
-  text-decoration: underline;
-}
+.markdown-body h1 { font-size: 2em; padding-bottom: 0.3em; border-bottom: 1px solid var(--md-border); }
+.markdown-body h2 { font-size: 1.5em; padding-bottom: 0.3em; border-bottom: 1px solid var(--md-border); }
+.markdown-body h3 { font-size: 1.25em; }
+.markdown-body h4 { font-size: 1em; }
+.markdown-body p { margin-top: 0; margin-bottom: 16px; }
+.markdown-body a { color: var(--md-link); text-decoration: none; }
+.markdown-body a:hover { text-decoration: underline; }
 
 .markdown-body code {
   padding: 0.2em 0.4em;
   margin: 0;
   font-size: 85%;
+  background-color: var(--md-code-bg);
   border-radius: 6px;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
@@ -95,6 +93,7 @@ html, body, #app {
   overflow: auto;
   font-size: 85%;
   line-height: 1.45;
+  background-color: var(--md-pre-bg);
   border-radius: 6px;
   margin-bottom: 16px;
 }
@@ -110,7 +109,8 @@ html, body, #app {
 .markdown-body blockquote {
   margin: 0 0 16px 0;
   padding: 0 1em;
-  border-left: 0.25em solid;
+  color: var(--md-muted);
+  border-left: 0.25em solid var(--md-border);
 }
 
 .markdown-body ul,
@@ -120,9 +120,7 @@ html, body, #app {
   margin-bottom: 16px;
 }
 
-.markdown-body li + li {
-  margin-top: 0.25em;
-}
+.markdown-body li + li { margin-top: 0.25em; }
 
 .markdown-body table {
   border-collapse: collapse;
@@ -137,135 +135,28 @@ html, body, #app {
 .markdown-body table th,
 .markdown-body table td {
   padding: 6px 13px;
-  border: 1px solid;
+  border: 1px solid var(--md-border);
 }
 
 .markdown-body table th {
   font-weight: 600;
+  background-color: var(--md-table-header-bg);
 }
 
-.markdown-body img {
-  max-width: 100%;
-  box-sizing: border-box;
+.markdown-body table tr:nth-child(2n) {
+  background-color: var(--md-table-header-bg);
 }
+
+.markdown-body img { max-width: 100%; box-sizing: border-box; }
 
 .markdown-body hr {
   height: 0.25em;
   padding: 0;
   margin: 24px 0;
+  background-color: var(--md-border);
   border: 0;
 }
 
-/* Light theme preview */
-.markdown-body-light {
-  color: #1f2328;
-  background-color: #ffffff;
-}
-
-.markdown-body-light a {
-  color: #0969da;
-}
-
-.markdown-body-light code {
-  background-color: rgba(175, 184, 193, 0.2);
-}
-
-.markdown-body-light pre {
-  background-color: #f6f8fa;
-}
-
-.markdown-body-light blockquote {
-  color: #636c76;
-  border-left-color: #d1d9e0;
-}
-
-.markdown-body-light h1,
-.markdown-body-light h2 {
-  border-bottom-color: #d1d9e0;
-}
-
-.markdown-body-light table th,
-.markdown-body-light table td {
-  border-color: #d1d9e0;
-}
-
-.markdown-body-light table th {
-  background-color: #f6f8fa;
-}
-
-.markdown-body-light table tr:nth-child(2n) {
-  background-color: #f6f8fa;
-}
-
-.markdown-body-light hr {
-  background-color: #d1d9e0;
-}
-
-/* Dark theme preview */
-.markdown-body-dark {
-  color: #e6edf3;
-  background-color: #0d1117;
-}
-
-.markdown-body-dark a {
-  color: #4493f8;
-}
-
-.markdown-body-dark code {
-  background-color: rgba(110, 118, 129, 0.4);
-}
-
-.markdown-body-dark pre {
-  background-color: #161b22;
-}
-
-.markdown-body-dark blockquote {
-  color: #8b949e;
-  border-left-color: #30363d;
-}
-
-.markdown-body-dark h1,
-.markdown-body-dark h2 {
-  border-bottom-color: #30363d;
-}
-
-.markdown-body-dark table th,
-.markdown-body-dark table td {
-  border-color: #30363d;
-}
-
-.markdown-body-dark table th {
-  background-color: #161b22;
-}
-
-.markdown-body-dark table tr:nth-child(2n) {
-  background-color: #161b22;
-}
-
-.markdown-body-dark hr {
-  background-color: #30363d;
-}
-
-/* Scrollbar styles */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgba(128, 128, 128, 0.4);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(128, 128, 128, 0.6);
-}
-
-/* kbd (keyboard shortcut) styles */
 .markdown-body kbd {
   display: inline-block;
   padding: 3px 5px;
@@ -273,16 +164,19 @@ html, body, #app {
   line-height: 1;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   border-radius: 3px;
+  background-color: var(--md-kbd-bg);
+  border: 1px solid var(--md-border);
+  color: var(--md-text);
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 
-/* mark (highlight) styles */
 .markdown-body mark {
   padding: 0.1em 0.3em;
   border-radius: 3px;
+  background-color: var(--md-mark-bg);
+  color: var(--md-text);
 }
 
-/* footnote styles */
 .markdown-body .footnote-ref {
   font-size: 0.75em;
   vertical-align: super;
@@ -291,121 +185,34 @@ html, body, #app {
 .markdown-body .footnotes {
   margin-top: 24px;
   padding-top: 16px;
-  border-top: 1px solid;
+  border-top: 1px solid var(--md-border);
   font-size: 0.875em;
+  color: var(--md-muted);
 }
 
-/* Light theme kbd/mark/footnotes */
-.markdown-body-light kbd {
-  background-color: #fafbfc;
-  border: 1px solid #d1d9e0;
-  color: #1f2328;
-}
-
-.markdown-body-light mark {
-  background-color: #fff8c5;
-  color: #1f2328;
-}
-
-.markdown-body-light .footnotes {
-  border-top-color: #d1d9e0;
-  color: #636c76;
-}
-
-/* Dark theme kbd/mark/footnotes */
-.markdown-body-dark kbd {
-  background-color: #161b22;
-  border: 1px solid #30363d;
-  color: #e6edf3;
-}
-
-.markdown-body-dark mark {
-  background-color: #3b2e00;
-  color: #e6edf3;
-}
-
-.markdown-body-dark .footnotes {
-  border-top-color: #30363d;
-  color: #8b949e;
-}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background-color: rgba(128, 128, 128, 0.4); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background-color: rgba(128, 128, 128, 0.6); }
 
 /* highlight.js dark theme overrides */
-.markdown-body-dark pre code.hljs {
-  background-color: #161b22;
-  color: #e6edf3;
-}
+.dark pre code.hljs { background-color: var(--md-pre-bg); color: var(--md-text); }
+.dark .hljs-comment, .dark .hljs-quote { color: var(--md-muted); font-style: italic; }
+.dark .hljs-keyword, .dark .hljs-selector-tag { color: #ff7b72; }
+.dark .hljs-string, .dark .hljs-addition { color: #a5d6ff; }
+.dark .hljs-number { color: #79c0ff; }
+.dark .hljs-built_in, .dark .hljs-type { color: #ffa657; }
+.dark .hljs-function, .dark .hljs-title { color: #d2a8ff; }
+.dark .hljs-attr, .dark .hljs-attribute { color: #79c0ff; }
+.dark .hljs-variable, .dark .hljs-template-variable { color: #ffa657; }
+.dark .hljs-name, .dark .hljs-selector-id, .dark .hljs-selector-class { color: #7ee787; }
+.dark .hljs-params { color: var(--md-text); }
+.dark .hljs-deletion { color: #ffa198; }
+.dark .hljs-meta { color: #79c0ff; }
+.dark .hljs-literal { color: #79c0ff; }
+.dark .hljs-subst { color: var(--md-text); }
+.dark .hljs-template-punctuation { color: #ff7b72; }
 
-.markdown-body-dark .hljs-comment,
-.markdown-body-dark .hljs-quote {
-  color: #8b949e;
-  font-style: italic;
-}
-
-.markdown-body-dark .hljs-keyword,
-.markdown-body-dark .hljs-selector-tag {
-  color: #ff7b72;
-}
-
-.markdown-body-dark .hljs-string,
-.markdown-body-dark .hljs-addition {
-  color: #a5d6ff;
-}
-
-.markdown-body-dark .hljs-number {
-  color: #79c0ff;
-}
-
-.markdown-body-dark .hljs-built_in,
-.markdown-body-dark .hljs-type {
-  color: #ffa657;
-}
-
-.markdown-body-dark .hljs-function,
-.markdown-body-dark .hljs-title {
-  color: #d2a8ff;
-}
-
-.markdown-body-dark .hljs-attr,
-.markdown-body-dark .hljs-attribute {
-  color: #79c0ff;
-}
-
-.markdown-body-dark .hljs-variable,
-.markdown-body-dark .hljs-template-variable {
-  color: #ffa657;
-}
-
-.markdown-body-dark .hljs-name,
-.markdown-body-dark .hljs-selector-id,
-.markdown-body-dark .hljs-selector-class {
-  color: #7ee787;
-}
-
-.markdown-body-dark .hljs-params {
-  color: #e6edf3;
-}
-
-.markdown-body-dark .hljs-deletion {
-  color: #ffa198;
-}
-
-.markdown-body-dark .hljs-meta {
-  color: #79c0ff;
-}
-
-.markdown-body-dark .hljs-literal {
-  color: #79c0ff;
-}
-
-.markdown-body-dark .hljs-subst {
-  color: #e6edf3;
-}
-
-.markdown-body-dark .hljs-template-punctuation {
-  color: #ff7b72;
-}
-
-/* Resizer */
 .resizer {
   width: 4px;
   cursor: col-resize;

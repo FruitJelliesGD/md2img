@@ -35,6 +35,15 @@ router.post("/", async (req: Request, res: Response) => {
       return;
     }
 
+    // Markdown length limit
+    if (markdown.length > 100_000) {
+      res.status(413).json({
+        error: "Payload Too Large",
+        message: "Markdown must not exceed 100,000 characters.",
+      });
+      return;
+    }
+
     // Validate theme
     if (theme && !["light", "dark"].includes(theme)) {
       res.status(400).json({
@@ -54,7 +63,7 @@ router.post("/", async (req: Request, res: Response) => {
     }
 
     // Validate width
-    if (width !== undefined && (typeof width !== "number" || width < 100 || width > 4096)) {
+    if (width !== undefined && (typeof width !== "number" || !Number.isFinite(width) || width < 100 || width > 4096)) {
       res.status(400).json({
         error: "Bad Request",
         message: "The 'width' field must be a number between 100 and 4096.",
@@ -63,7 +72,7 @@ router.post("/", async (req: Request, res: Response) => {
     }
 
     // Validate quality
-    if (quality !== undefined && (typeof quality !== "number" || quality < 0 || quality > 1)) {
+    if (quality !== undefined && (typeof quality !== "number" || !Number.isFinite(quality) || quality < 0 || quality > 1)) {
       res.status(400).json({
         error: "Bad Request",
         message: "The 'quality' field must be a number between 0 and 1.",

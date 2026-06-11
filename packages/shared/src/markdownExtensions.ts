@@ -1,8 +1,5 @@
 import type { MarkedExtension } from "marked";
 
-/**
- * Custom marked extension for superscript syntax: X^2^ → <sup>2</sup>
- */
 const superscript = {
   name: "superscript",
   level: "inline" as const,
@@ -24,9 +21,6 @@ const superscript = {
   },
 };
 
-/**
- * Custom marked extension for subscript syntax: H~2~O → H<sub>2</sub>O
- */
 const subscript = {
   name: "subscript",
   level: "inline" as const,
@@ -48,9 +42,6 @@ const subscript = {
   },
 };
 
-/**
- * Custom marked extension for highlight syntax: ==text== → <mark>text</mark>
- */
 const highlight = {
   name: "highlight",
   level: "inline" as const,

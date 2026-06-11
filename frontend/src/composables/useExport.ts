@@ -9,14 +9,32 @@ export interface ExportOptions {
   quality: number;
 }
 
+function getBaseOptions(theme: "light" | "dark") {
+  return {
+    pixelRatio: 2,
+    backgroundColor: theme === "dark" ? "#0d1117" : "#ffffff",
+    style: {
+      transform: "scale(1)",
+      transformOrigin: "top left" as const,
+    },
+  };
+}
+
+function triggerDownload(blob: Blob, format: ExportFormat) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `markdown.${format}`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 export function useExport() {
   const isExporting = ref(false);
   const error = ref<string | null>(null);
 
-  /**
-   * Download image using html-to-image (pure frontend, no backend needed).
-   * Supports PNG, JPEG, and WebP formats with 2x pixel ratio.
-   */
   async function downloadImage(
     element: HTMLElement,
     options: ExportOptions,
@@ -26,10 +44,7 @@ export function useExport() {
     error.value = null;
 
     try {
-      const isDark = theme === "dark";
-      const bgColor = isDark ? "#0d1117" : "#ffffff";
-
-      // Temporarily set the element to the desired export width
+      const baseOpts = getBaseOptions(theme);
       const originalWidth = element.style.width;
       const originalMinWidth = element.style.minWidth;
       element.style.width = `${options.width}px`;
@@ -39,38 +54,15 @@ export function useExport() {
         let blob: Blob;
 
         if (options.format === "png") {
-          const dataUrl = await toPng(element, {
-            pixelRatio: 2,
-            backgroundColor: bgColor,
-            style: {
-              transform: "scale(1)",
-              transformOrigin: "top left",
-            },
-          });
+          const dataUrl = await toPng(element, baseOpts);
           const response = await fetch(dataUrl);
           blob = await response.blob();
         } else if (options.format === "jpeg") {
-          const dataUrl = await toJpeg(element, {
-            pixelRatio: 2,
-            quality: options.quality,
-            backgroundColor: bgColor,
-            style: {
-              transform: "scale(1)",
-              transformOrigin: "top left",
-            },
-          });
+          const dataUrl = await toJpeg(element, { ...baseOpts, quality: options.quality });
           const response = await fetch(dataUrl);
           blob = await response.blob();
         } else {
-          // WebP: use toCanvas then convert to blob
-          const canvas = await toCanvas(element, {
-            pixelRatio: 2,
-            backgroundColor: bgColor,
-            style: {
-              transform: "scale(1)",
-              transformOrigin: "top left",
-            },
-          });
+          const canvas = await toCanvas(element, baseOpts);
           blob = await new Promise<Blob>((resolve, reject) => {
             canvas.toBlob(
               (b) => {
@@ -83,17 +75,8 @@ export function useExport() {
           });
         }
 
-        // Trigger download
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `markdown.${options.format}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        triggerDownload(blob, options.format);
       } finally {
-        // Restore original element width
         element.style.width = originalWidth;
         element.style.minWidth = originalMinWidth;
       }
@@ -105,9 +88,6 @@ export function useExport() {
     }
   }
 
-  /**
-   * Copy preview to clipboard using html-to-image (pure frontend).
-   */
   async function copyToClipboard(
     element: HTMLElement,
     theme: "light" | "dark"
@@ -116,18 +96,7 @@ export function useExport() {
     error.value = null;
 
     try {
-      const isDark = theme === "dark";
-      const bgColor = isDark ? "#0d1117" : "#ffffff";
-
-      const dataUrl = await toPng(element, {
-        pixelRatio: 2,
-        backgroundColor: bgColor,
-        style: {
-          transform: "scale(1)",
-          transformOrigin: "top left",
-        },
-      });
-
+      const dataUrl = await toPng(element, getBaseOptions(theme));
       const response = await fetch(dataUrl);
       const blob = await response.blob();
 

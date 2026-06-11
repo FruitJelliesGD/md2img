@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import type { Request, Response, NextFunction } from "express";
 
 /**
@@ -31,7 +32,17 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
     return;
   }
 
-  if (token !== expectedKey) {
+  try {
+    const tokenBuf = Buffer.from(token);
+    const keyBuf = Buffer.from(expectedKey);
+    if (tokenBuf.length !== keyBuf.length || !crypto.timingSafeEqual(tokenBuf, keyBuf)) {
+      res.status(401).json({
+        error: "Unauthorized",
+        message: "Invalid API key",
+      });
+      return;
+    }
+  } catch {
     res.status(401).json({
       error: "Unauthorized",
       message: "Invalid API key",

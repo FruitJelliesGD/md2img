@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
 import Editor from "./components/Editor.vue";
 import Preview from "./components/Preview.vue";
 import Toolbar from "./components/Toolbar.vue";
@@ -84,10 +84,8 @@ import { useTheme } from "./composables/useTheme";
 import { useMarkdown } from "./composables/useMarkdown";
 import { useExport, type ExportFormat } from "./composables/useExport";
 
-// Theme
 const { theme, toggleTheme } = useTheme();
 
-// Default markdown content
 const defaultMarkdown = `# Welcome to md2img
 
 ## Markdown to Image Converter
@@ -126,16 +124,38 @@ function greet(name) {
 Happy writing! ✨
 `;
 
-const markdown = ref(defaultMarkdown);
+function loadPersisted<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw !== null ? JSON.parse(raw) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+const markdown = ref(loadPersisted("md2img-markdown", defaultMarkdown));
+const exportFormat = ref<ExportFormat>(loadPersisted("md2img-export-format", "png"));
+const exportWidth = ref(loadPersisted("md2img-export-width", 800));
+const exportQuality = ref(loadPersisted("md2img-export-quality", 0.92));
+
+let persistTimer: ReturnType<typeof setTimeout> | null = null;
+function persist(key: string, value: unknown) {
+  if (persistTimer) clearTimeout(persistTimer);
+  persistTimer = setTimeout(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, 500);
+}
+
+watch(markdown, (v) => persist("md2img-markdown", v));
+watch(exportFormat, (v) => persist("md2img-export-format", v));
+watch(exportWidth, (v) => persist("md2img-export-width", v));
+watch(exportQuality, (v) => persist("md2img-export-quality", v));
 
 // Markdown rendering
 const { html: renderedHtml, stats } = useMarkdown(() => markdown.value);
 
 // Export
 const { isExporting, downloadImage, copyToClipboard } = useExport();
-const exportFormat = ref<ExportFormat>("png");
-const exportWidth = ref(800);
-const exportQuality = ref(0.92);
 
 // Preview ref
 const previewRef = ref<InstanceType<typeof Preview> | null>(null);
@@ -225,4 +245,18 @@ function startResize(e: MouseEvent) {
 
 // API doc modal
 const showApiDoc = ref(false);
+
+// Keyboard shortcuts
+onMounted(() => {
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+      e.preventDefault();
+      handleDownload();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "C") {
+      e.preventDefault();
+      handleCopy();
+    }
+  });
+});
 </script>
