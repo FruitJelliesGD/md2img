@@ -77,7 +77,7 @@ class Md2ImgServer {
     this.server = new Server(
       {
         name: "md2img",
-        version: "1.0.0",
+        version: "1.0.1",
       },
       {
         capabilities: {

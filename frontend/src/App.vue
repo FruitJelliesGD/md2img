@@ -76,12 +76,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch } from "vue";
+import { ref, reactive, onMounted, onBeforeUnmount, watch, defineAsyncComponent } from "vue";
 import Editor from "./components/Editor.vue";
 import Preview from "./components/Preview.vue";
 import Toolbar from "./components/Toolbar.vue";
 import StatusBar from "./components/StatusBar.vue";
-import ApiDocModal from "./components/ApiDocModal.vue";
+const ApiDocModal = defineAsyncComponent(() => import("./components/ApiDocModal.vue"));
 import Toast from "./components/Toast.vue";
 import { useTheme } from "./composables/useTheme";
 import { useMarkdown } from "./composables/useMarkdown";
@@ -258,16 +258,22 @@ function startResize(e: MouseEvent) {
 const showApiDoc = ref(false);
 
 // Keyboard shortcuts
+function handleKeydown(e: KeyboardEvent) {
+  if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+    e.preventDefault();
+    handleDownload();
+  }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "C") {
+    e.preventDefault();
+    handleCopy();
+  }
+}
+
 onMounted(() => {
-  document.addEventListener("keydown", (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === "s") {
-      e.preventDefault();
-      handleDownload();
-    }
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "C") {
-      e.preventDefault();
-      handleCopy();
-    }
-  });
+  document.addEventListener("keydown", handleKeydown);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keydown", handleKeydown);
 });
 </script>

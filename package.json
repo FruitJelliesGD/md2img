@@ -10,7 +10,8 @@
     "dev:backend": "pnpm --filter backend dev",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint . --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
   },
   "engines": {

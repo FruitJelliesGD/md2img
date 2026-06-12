@@ -3,6 +3,7 @@
     <!-- Format selector -->
     <select
       :value="format"
+      aria-label="Export format"
       class="px-2 py-1 text-sm rounded border bg-transparent"
       :class="theme === 'dark'
         ? 'border-gray-600 text-gray-200 bg-gray-800'
@@ -25,6 +26,7 @@
       <input
         type="number"
         :value="width"
+        aria-label="Image width in pixels"
         min="100"
         max="4096"
         step="100"

@@ -11,6 +11,7 @@
         md2img
       </h1>
       <button
+        aria-label="Toggle theme"
         class="px-3 py-1 text-sm rounded-md transition-colors"
         :class="theme === 'dark'
           ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
@@ -36,6 +37,7 @@
     <div class="flex items-center gap-2">
       <button
         :disabled="isExporting"
+        aria-label="Download image"
         class="px-4 py-1.5 text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         @click="$emit('download')"
       >
@@ -43,6 +45,7 @@
       </button>
       <button
         :disabled="isExporting"
+        aria-label="Copy to clipboard"
         class="px-4 py-1.5 text-sm font-medium rounded-md border transition-colors"
         :class="theme === 'dark'
           ? 'border-gray-600 hover:bg-gray-700 text-gray-200 disabled:opacity-50'
@@ -52,6 +55,7 @@
         📋 复制
       </button>
       <button
+        aria-label="Show API documentation"
         class="px-3 py-1.5 text-sm rounded-md border transition-colors"
         :class="theme === 'dark'
           ? 'border-gray-600 hover:bg-gray-700 text-gray-200'

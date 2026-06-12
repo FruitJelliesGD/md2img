@@ -11,6 +11,9 @@
 
         <!-- Modal -->
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="API Documentation"
           class="relative w-full max-w-3xl max-h-[85vh] overflow-auto rounded-xl shadow-2xl mx-4"
           :class="theme === 'dark' ? 'bg-gray-900 text-gray-200' : 'bg-white text-gray-800'"
         >
@@ -23,6 +26,7 @@
               API 文档
             </h2>
             <button
+              aria-label="Close"
               class="text-2xl leading-none hover:opacity-70 transition-opacity"
               @click="$emit('close')"
             >

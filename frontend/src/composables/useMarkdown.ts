@@ -1,4 +1,4 @@
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onBeforeUnmount } from "vue";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import hljs from "highlight.js";
@@ -44,6 +44,12 @@ export function useMarkdown(source: () => string, options?: { debounceMs?: numbe
     const chars = text.length;
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     return { lines, chars, words };
+  });
+
+  onBeforeUnmount(() => {
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+    }
   });
 
   return {

@@ -92,7 +92,6 @@ async function captureImage(
 
 export function useExport() {
   const isExporting = ref(false);
-  const error = ref<string | null>(null);
 
   async function downloadImage(
     element: HTMLElement,
@@ -100,14 +99,9 @@ export function useExport() {
     theme: "light" | "dark"
   ): Promise<void> {
     isExporting.value = true;
-    error.value = null;
-
     try {
       const blob = await captureImage(element, options, theme);
       triggerDownload(blob, options.format);
-    } catch (e) {
-      error.value = e instanceof Error ? e.message : "Export failed";
-      throw e;
     } finally {
       isExporting.value = false;
     }
@@ -119,16 +113,14 @@ export function useExport() {
     theme: "light" | "dark"
   ): Promise<void> {
     isExporting.value = true;
-    error.value = null;
-
     try {
       const blob = await captureImage(element, options, theme);
+      if (!navigator.clipboard?.write) {
+        throw new Error("Clipboard API not supported in this browser");
+      }
       await navigator.clipboard.write([
         new ClipboardItem({ "image/png": blob }),
       ]);
-    } catch (e) {
-      error.value = e instanceof Error ? e.message : "Copy failed";
-      throw e;
     } finally {
       isExporting.value = false;
     }
@@ -136,7 +128,6 @@ export function useExport() {
 
   return {
     isExporting,
-    error,
     downloadImage,
     copyToClipboard,
   };
