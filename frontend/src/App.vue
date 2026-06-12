@@ -32,7 +32,7 @@
           : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
         @click="mobileTab = 'editor'"
       >
-        {{ t('export.editor') || 'Editor' }}
+        {{ t('export.editor') }}
       </button>
       <button
         class="flex-1 py-2 text-sm font-medium transition-colors"
@@ -41,7 +41,7 @@
           : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
         @click="mobileTab = 'preview'"
       >
-        {{ t('export.preview') || 'Preview' }}
+        {{ t('export.preview') }}
       </button>
     </div>
 

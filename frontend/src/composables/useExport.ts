@@ -116,12 +116,12 @@ export function useExport() {
   ): Promise<void> {
     isExporting.value = true;
     try {
-      const blob = await captureImage(element, options, theme);
+      const pngBlob = await captureImage(element, { ...options, format: "png" }, theme);
       if (!navigator.clipboard?.write) {
         throw new Error("Clipboard API not supported in this browser");
       }
       await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": blob }),
+        new ClipboardItem({ "image/png": pngBlob }),
       ]);
     } finally {
       isExporting.value = false;

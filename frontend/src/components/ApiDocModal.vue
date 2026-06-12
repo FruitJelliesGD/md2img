@@ -11,6 +11,7 @@
 
         <!-- Modal -->
         <div
+          ref="modalRef"
           role="dialog"
           aria-modal="true"
           aria-label="API Documentation"
@@ -288,7 +289,7 @@ with open('output.png', 'wb') as f:
 <script setup lang="ts">
 import { ref, watch, onBeforeUnmount } from "vue";
 
-defineProps<{
+const props = defineProps<{
   visible: boolean;
   theme: "light" | "dark";
   authHint?: boolean;
@@ -329,9 +330,9 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 watch(
-  () => true,
-  () => {
-    if (modalRef.value) {
+  () => props.visible,
+  (newVal) => {
+    if (newVal && modalRef.value) {
       previousFocus = document.activeElement as HTMLElement;
       document.addEventListener("keydown", handleKeydown);
       const firstFocusable = modalRef.value.querySelector<HTMLElement>(

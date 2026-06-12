@@ -6,7 +6,6 @@
     <div
       ref="contentRef"
       class="markdown-body mx-auto"
-      :class="theme === 'dark' ? 'markdown-body-dark' : 'markdown-body-light'"
       v-html="html"
     />
   </div>
