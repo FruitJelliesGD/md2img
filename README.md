@@ -7,6 +7,7 @@
 ## ✨ 功能特性
 
 - **实时预览**：左侧编辑器 + 右侧 GitHub 风格预览，所见即所得
+- **同步滚动**：编辑器与预览双向同步滚动，支持垂直和水平滚动
 - **多格式导出**：支持 PNG、JPEG、WebP 格式
 - **主题切换**：亮色 / 暗色主题，编辑器与预览同步切换
 - **高清输出**：默认 2x 分辨率，文字清晰锐利
@@ -15,6 +16,9 @@
 - **REST API**：提供 `/api/convert` 接口，支持程序化调用
 - **MCP Server**：AI Agent 可通过 MCP 协议调用 md2img 能力
 - **可配置认证与配额**：通过环境变量灵活控制
+- **国际化**：支持中文/英文界面切换
+- **响应式布局**：移动端自动切换为标签页模式
+- **键盘快捷键**：Ctrl+S 下载、Ctrl+F 搜索、Ctrl+/ 快捷键帮助
 
 ### 📝 Markdown 扩展语法
 
@@ -37,6 +41,9 @@
 | 后端截图 | Playwright (playwright-core + @sparticuz/chromium) |
 | 后端 | Node.js + Express |
 | MCP Server | @modelcontextprotocol/sdk |
+| 图标 | Lucide Vue (SVG icons) |
+| 测试 | Vitest + @vue/test-utils |
+| 代码规范 | ESLint + Prettier |
 
 ## 🚀 快速开始
 
