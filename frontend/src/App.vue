@@ -60,6 +60,7 @@
         :style="isMobile ? {} : { width: editorWidth + '%' }"
       >
         <Editor
+          ref="editorRef"
           v-model="markdown"
           :theme="theme"
         />
@@ -92,6 +93,8 @@
     <StatusBar
       :stats="stats"
       :theme="theme"
+      :sync-scroll="syncScrollEnabled"
+      @toggle-sync-scroll="syncScrollEnabled = !syncScrollEnabled"
     />
 
     <!-- API Doc Modal -->
@@ -132,6 +135,7 @@ import { useMarkdown } from "./composables/useMarkdown";
 import { useExport, type ExportFormat } from "./composables/useExport";
 import { useI18n } from "./composables/useI18n";
 import { useMediaQuery } from "./composables/useMediaQuery";
+import { useSyncScroll } from "./composables/useSyncScroll";
 
 const { theme, toggleTheme } = useTheme();
 const { t, toggleLocale, locale } = useI18n();
@@ -224,6 +228,28 @@ const { isExporting, downloadImage, copyToClipboard } = useExport();
 
 // Preview ref
 const previewRef = ref<InstanceType<typeof Preview> | null>(null);
+const editorRef = ref<InstanceType<typeof Editor> | null>(null);
+
+// Sync scroll
+const syncScrollEnabled = ref(true);
+const editorScrollEl = ref<HTMLElement | null>(null);
+const previewScrollEl = ref<HTMLElement | null>(null);
+
+watch(
+  () => previewRef.value,
+  (val) => {
+    previewScrollEl.value = val?.getScrollElement() ?? null;
+  }
+);
+
+watch(
+  () => editorRef.value,
+  (val) => {
+    editorScrollEl.value = val?.getScrollElement() ?? null;
+  }
+);
+
+useSyncScroll(editorScrollEl, previewScrollEl, syncScrollEnabled);
 
 // Toast
 const toast = reactive({

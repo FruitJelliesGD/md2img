@@ -132,6 +132,11 @@ watch(
   }
 );
 
+defineExpose({
+  getScrollElement: () => editorView?.scrollDOM ?? null,
+  getEditorView: () => editorView,
+});
+
 onMounted(() => {
   createEditor();
 });

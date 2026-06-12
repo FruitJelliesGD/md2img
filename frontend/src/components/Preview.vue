@@ -40,5 +40,6 @@ watch(
 defineExpose({
   getPreviewElement: () => previewRef.value,
   getContentElement: () => contentRef.value,
+  getScrollElement: () => previewRef.value,
 });
 </script>

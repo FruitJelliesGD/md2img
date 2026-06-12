@@ -4,7 +4,22 @@
     aria-label="Document statistics"
     class="flex items-center justify-between px-4 py-1.5 text-xs border-t bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 shadow-statusbar dark:shadow-statusbar-dark"
   >
-    <span class="font-medium text-gray-600 dark:text-gray-300">md2img</span>
+    <div class="flex items-center gap-3">
+      <span class="font-medium text-gray-600 dark:text-gray-300">md2img</span>
+      <button
+        :aria-label="syncScroll ? 'Disable sync scroll' : 'Enable sync scroll'"
+        class="flex items-center gap-1 px-2 py-0.5 rounded text-xs transition-colors"
+        :class="syncScroll
+          ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
+          : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'"
+        @click="$emit('toggleSyncScroll')"
+      >
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+        {{ syncScroll ? 'Sync' : 'Scroll' }}
+      </button>
+    </div>
     <div class="flex items-center gap-4">
       <span
         v-if="stats.chars > 80000"
@@ -35,5 +50,10 @@ defineProps<{
     words: number;
     chars: number;
   };
+  syncScroll: boolean;
+}>();
+
+defineEmits<{
+  (e: "toggleSyncScroll"): void;
 }>();
 </script>
