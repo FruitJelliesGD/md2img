@@ -34,7 +34,7 @@
         :class="theme === 'dark'
           ? 'border-gray-600 text-gray-200 bg-gray-800'
           : 'border-gray-300 text-gray-700 bg-white'"
-        @input="$emit('update:width', Number(($event.target as HTMLInputElement).value))"
+        @input="$emit('update:width', Math.min(Math.max(Number(($event.target as HTMLInputElement).value), 100), 4096))"
       >
       <span
         class="text-xs"

@@ -146,11 +146,26 @@ const exportWidth = ref(loadPersisted("md2img-export-width", 800));
 const exportQuality = ref(loadPersisted("md2img-export-quality", 0.92));
 
 let persistTimer: ReturnType<typeof setTimeout> | null = null;
+const pendingPersists: Array<() => void> = [];
+
 function persist(key: string, value: unknown) {
   if (persistTimer) clearTimeout(persistTimer);
-  persistTimer = setTimeout(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  }, 500);
+  const write = () => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      // ignore quota errors
+    }
+  };
+  pendingPersists.length = 0;
+  pendingPersists.push(write);
+  persistTimer = setTimeout(write, 500);
+}
+
+function flushPersist() {
+  if (persistTimer) clearTimeout(persistTimer);
+  for (const fn of pendingPersists) fn();
+  pendingPersists.length = 0;
 }
 
 watch(markdown, (v) => persist("md2img-markdown", v));
@@ -275,9 +290,11 @@ function handleKeydown(e: KeyboardEvent) {
 
 onMounted(() => {
   document.addEventListener("keydown", handleKeydown);
+  window.addEventListener("beforeunload", flushPersist);
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("keydown", handleKeydown);
+  window.removeEventListener("beforeunload", flushPersist);
 });
 </script>
