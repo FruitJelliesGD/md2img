@@ -13,6 +13,7 @@ import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
 import { syntaxHighlighting, defaultHighlightStyle, bracketMatching } from "@codemirror/language";
+import { searchKeymap, highlightSelectionMatches } from "@codemirror/search";
 
 const props = defineProps<{
   modelValue: string;
@@ -87,7 +88,8 @@ function createEditor() {
       bracketMatching(),
       syntaxHighlighting(defaultHighlightStyle),
       markdown({ base: markdownLanguage, codeLanguages: languages }),
-      keymap.of([...defaultKeymap, ...historyKeymap]),
+      keymap.of([...defaultKeymap, ...historyKeymap, ...searchKeymap]),
+      highlightSelectionMatches(),
       themeCompartment.of(createTheme(props.theme === "dark")),
       updateListener,
       EditorView.lineWrapping,
