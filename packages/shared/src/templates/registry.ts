@@ -49,7 +49,7 @@ const overwatchCSS = `
 }
 
 .overwatch-template li::before {
-  content: '\\25B8';
+  content: '▸';
   position: absolute;
   left: 0;
   color: #00d4ff;
@@ -72,6 +72,7 @@ export const overwatchTemplate: Template = {
   id: 'overwatch',
   name: 'Overwatch Patch Notes',
   description: 'Dark-themed template inspired by Overwatch patch notes',
+  preview: 'Dark blue gradient background with cyan and orange accent colors',
   css: overwatchCSS,
   author: 'md2img',
   version: '1.0.0'
@@ -82,6 +83,9 @@ export const defaultTemplates: Template[] = [
 ];
 
 export function getTemplate(id: string): Template | undefined {
+  if (!id || typeof id !== 'string') {
+    return undefined;
+  }
   return defaultTemplates.find(t => t.id === id);
 }
 
