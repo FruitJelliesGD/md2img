@@ -20,6 +20,16 @@
       >
         {{ theme === 'dark' ? '☀️ 亮色' : '🌙 暗色' }}
       </button>
+      <button
+        aria-label="Toggle language"
+        class="px-3 py-1 text-sm rounded-md transition-colors"
+        :class="theme === 'dark'
+          ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
+          : 'bg-gray-200 hover:bg-gray-300 text-gray-700'"
+        @click="$emit('toggleLocale')"
+      >
+        {{ locale === 'zh-CN' ? 'EN' : '中' }}
+      </button>
     </div>
 
     <!-- Center: Export Settings -->
@@ -74,6 +84,7 @@ import type { ExportFormat } from "../composables/useExport";
 
 defineProps<{
   theme: "light" | "dark";
+  locale: string;
   format: ExportFormat;
   width: number;
   quality: number;
@@ -82,6 +93,7 @@ defineProps<{
 
 defineEmits<{
   (e: "toggleTheme"): void;
+  (e: "toggleLocale"): void;
   (e: "update:format", value: ExportFormat): void;
   (e: "update:width", value: number): void;
   (e: "update:quality", value: number): void;

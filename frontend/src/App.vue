@@ -6,11 +6,13 @@
     <!-- Toolbar -->
     <Toolbar
       :theme="theme"
+      :locale="locale"
       :format="exportFormat"
       :width="exportWidth"
       :quality="exportQuality"
       :is-exporting="isExporting"
       @toggle-theme="toggleTheme"
+      @toggle-locale="toggleLocale"
       @update:format="exportFormat = $event"
       @update:width="exportWidth = $event"
       @update:quality="exportQuality = $event"
