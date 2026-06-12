@@ -7,11 +7,14 @@ export default {
   export: {
     downloading: "导出中...",
     download: "下载图片",
+    downloaded: "图片已下载",
     copy: "复制",
     copied: "已复制到剪贴板",
     copyFailed: "复制失败",
     downloadFailed: "下载失败",
     apiDoc: "API 文档",
+    quality: "质量",
+    close: "关闭",
   },
   status: {
     lines: "行",

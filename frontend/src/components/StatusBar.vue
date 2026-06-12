@@ -11,17 +11,21 @@
       v-if="stats.chars > 80000"
       class="mr-2 text-yellow-500"
     >
-      {{ stats.chars >= 100000 ? '已达上限' : '即将达到字符上限' }}
+      {{ stats.chars >= 100000 ? t('status.charLimitReached') : t('status.charLimitWarning') }}
     </span>
-    <span>行 {{ stats.lines }}</span>
+    <span>{{ t('status.lines') }} {{ stats.lines }}</span>
     <span class="mx-2">·</span>
-    <span>词 {{ stats.words }}</span>
+    <span>{{ t('status.words') }} {{ stats.words }}</span>
     <span class="mx-2">·</span>
-    <span>字符 {{ stats.chars.toLocaleString() }}</span>
+    <span>{{ t('status.chars') }} {{ stats.chars.toLocaleString() }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "../composables/useI18n";
+
+const { t } = useI18n();
+
 defineProps<{
   stats: {
     lines: number;

@@ -7,11 +7,14 @@ export default {
   export: {
     downloading: "Exporting...",
     download: "Download Image",
+    downloaded: "Image downloaded",
     copy: "Copy",
     copied: "Copied to clipboard",
     copyFailed: "Copy failed",
     downloadFailed: "Download failed",
     apiDoc: "API Documentation",
+    quality: "Quality",
+    close: "Close",
   },
   status: {
     lines: "lines",

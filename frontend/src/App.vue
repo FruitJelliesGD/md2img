@@ -203,7 +203,7 @@ async function handleDownload() {
       },
       theme.value
     );
-    showToast(t("export.copied"), "success");
+    showToast(t("export.downloaded"), "success");
   } catch (e) {
     showToast(t("export.downloadFailed") + ": " + (e instanceof Error ? e.message : t("errors.unknownError")), "error");
   }

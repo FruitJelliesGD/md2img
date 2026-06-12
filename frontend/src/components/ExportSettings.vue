@@ -50,7 +50,7 @@
       <label
         class="text-xs"
         :class="theme === 'dark' ? 'text-gray-400' : 'text-gray-500'"
-      >质量</label>
+      >{{ t('export.quality') }}</label>
       <input
         type="range"
         :value="quality"
@@ -72,6 +72,9 @@
 
 <script setup lang="ts">
 import type { ExportFormat } from "../composables/useExport";
+import { useI18n } from "../composables/useI18n";
+
+const { t } = useI18n();
 
 defineProps<{
   format: ExportFormat;

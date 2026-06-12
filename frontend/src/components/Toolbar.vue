@@ -18,7 +18,7 @@
           : 'bg-gray-200 hover:bg-gray-300 text-gray-700'"
         @click="$emit('toggleTheme')"
       >
-        {{ theme === 'dark' ? '☀️ 亮色' : '🌙 暗色' }}
+        {{ theme === 'dark' ? '☀️ ' + t('theme.light') : '🌙 ' + t('theme.dark') }}
       </button>
       <button
         aria-label="Toggle language"
@@ -51,7 +51,7 @@
         class="px-4 py-1.5 text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         @click="$emit('download')"
       >
-        {{ isExporting ? '导出中...' : '📥 下载图片' }}
+        {{ isExporting ? t('export.downloading') : '📥 ' + t('export.download') }}
       </button>
       <button
         :disabled="isExporting"
@@ -62,7 +62,7 @@
           : 'border-gray-300 hover:bg-gray-100 text-gray-700 disabled:opacity-50'"
         @click="$emit('copy')"
       >
-        📋 复制
+        📋 {{ t('export.copy') }}
       </button>
       <button
         aria-label="Show API documentation"
@@ -81,6 +81,9 @@
 <script setup lang="ts">
 import ExportSettings from "./ExportSettings.vue";
 import type { ExportFormat } from "../composables/useExport";
+import { useI18n } from "../composables/useI18n";
+
+const { t } = useI18n();
 
 defineProps<{
   theme: "light" | "dark";
