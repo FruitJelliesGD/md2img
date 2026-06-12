@@ -5,7 +5,7 @@
   >
     <div
       ref="contentRef"
-      class="markdown-body mx-auto"
+      class="markdown-body mx-auto max-w-4xl"
       v-html="html"
     />
   </div>

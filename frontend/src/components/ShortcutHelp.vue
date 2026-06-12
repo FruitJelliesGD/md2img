@@ -16,14 +16,14 @@
         >
           <h2 class="text-lg font-bold mb-4">{{ t('shortcuts.title') }}</h2>
           <div class="space-y-2">
-            <div v-for="shortcut in shortcuts" :key="shortcut.keys" class="flex justify-between items-center py-1">
-              <span class="text-sm">{{ shortcut.description }}</span>
-              <kbd class="px-2 py-0.5 text-xs rounded border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800"
+            <div v-for="shortcut in shortcuts" :key="shortcut.keys" class="flex justify-between items-center py-1.5 px-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+              <span class="text-sm text-gray-700 dark:text-gray-300">{{ shortcut.description }}</span>
+              <kbd class="inline-flex items-center px-2 py-0.5 text-xs font-mono rounded-md border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 shadow-sm"
               >{{ shortcut.keys }}</kbd>
             </div>
           </div>
           <button
-            class="mt-4 w-full px-4 py-2 text-sm rounded-md transition-colors bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+            class="mt-4 w-full px-4 py-2 text-sm font-medium rounded-lg transition-colors bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
             @click="$emit('close')"
           >
             {{ t('export.close') }}
@@ -106,3 +106,28 @@ const shortcuts = [
   { keys: "Ctrl+/", description: t("shortcuts.toggleHelp") },
 ];
 </script>
+
+<style scoped>
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.2s ease;
+}
+.modal-enter-active > div:last-child,
+.modal-leave-active > div:last-child {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+}
+.modal-enter-from {
+  opacity: 0;
+}
+.modal-enter-from > div:last-child {
+  transform: scale(0.95) translateY(10px);
+  opacity: 0;
+}
+.modal-leave-to {
+  opacity: 0;
+}
+.modal-leave-to > div:last-child {
+  transform: scale(0.95) translateY(10px);
+  opacity: 0;
+}
+</style>

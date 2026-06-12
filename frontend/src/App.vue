@@ -24,7 +24,7 @@
     <div
       v-if="isMobile"
       role="tablist"
-      class="flex border-b bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700"
+      class="flex border-b bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
     >
       <button
         role="tab"

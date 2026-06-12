@@ -227,9 +227,14 @@ html, body, #app {
 .resizer {
   width: 4px;
   cursor: col-resize;
-  background-color: transparent;
-  transition: background-color 0.2s;
+  background-color: rgba(0, 0, 0, 0.08);
+  transition: background-color 0.15s ease;
   flex-shrink: 0;
+  position: relative;
+}
+
+.dark .resizer {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .resizer:hover,

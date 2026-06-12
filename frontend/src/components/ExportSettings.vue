@@ -1,25 +1,23 @@
 <template>
   <div class="flex items-center gap-3">
     <!-- Format selector -->
-    <select
-      :value="format"
-      aria-label="Export format"
-      class="px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-      @change="$emit('update:format', ($event.target as HTMLSelectElement).value as ExportFormat)"
-    >
-      <option value="png">
-        PNG
-      </option>
-      <option value="jpeg">
-        JPEG
-      </option>
-      <option value="webp">
-        WebP
-      </option>
-    </select>
+    <div class="flex items-center gap-1.5">
+      <label class="text-xs font-medium text-gray-500 dark:text-gray-400">Format</label>
+      <select
+        :value="format"
+        aria-label="Export format"
+        class="px-2 py-1 text-sm rounded-lg border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
+        @change="$emit('update:format', ($event.target as HTMLSelectElement).value as ExportFormat)"
+      >
+        <option value="png">PNG</option>
+        <option value="jpeg">JPEG</option>
+        <option value="webp">WebP</option>
+      </select>
+    </div>
 
     <!-- Width input -->
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1.5">
+      <label class="text-xs font-medium text-gray-500 dark:text-gray-400">Width</label>
       <input
         type="number"
         :value="width"
@@ -27,10 +25,10 @@
         min="100"
         max="4096"
         step="100"
-        class="w-20 px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+        class="w-20 px-2 py-1 text-sm rounded-lg border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
         @input="$emit('update:width', Math.min(Math.max(Number(($event.target as HTMLInputElement).value), 100), 4096))"
       >
-      <span class="text-xs text-gray-500 dark:text-gray-400">px</span>
+      <span class="text-xs text-gray-400 dark:text-gray-500">px</span>
     </div>
 
     <!-- Quality slider (only for jpeg/webp) -->
@@ -38,7 +36,7 @@
       v-if="format !== 'png'"
       class="flex items-center gap-2"
     >
-      <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('export.quality') }}</label>
+      <label class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ t('export.quality') }}</label>
       <input
         type="range"
         :value="quality"
@@ -46,10 +44,9 @@
         min="0.1"
         max="1"
         step="0.01"
-        class="w-20"
-        @input="$emit('update:quality', Number(($event.target as HTMLInputElement).value))"
+        class="w-20 h-1.5 rounded-full appearance-none bg-gray-200 dark:bg-gray-600 cursor-pointer accent-primary-600"
       >
-      <span class="text-xs text-gray-500 dark:text-gray-400">
+      <span class="text-xs font-medium text-gray-500 dark:text-gray-400 min-w-[2.5rem] text-right">
         {{ Math.round(quality * 100) }}%
       </span>
     </div>

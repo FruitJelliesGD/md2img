@@ -186,8 +186,22 @@ onBeforeUnmount(() => {
 .modal-leave-active {
   transition: opacity 0.2s ease;
 }
-.modal-enter-from,
+.modal-enter-active > div:last-child,
+.modal-leave-active > div:last-child {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+}
+.modal-enter-from {
+  opacity: 0;
+}
+.modal-enter-from > div:last-child {
+  transform: scale(0.95) translateY(10px);
+  opacity: 0;
+}
 .modal-leave-to {
+  opacity: 0;
+}
+.modal-leave-to > div:last-child {
+  transform: scale(0.95) translateY(10px);
   opacity: 0;
 }
 </style>
