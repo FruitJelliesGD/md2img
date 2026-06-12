@@ -1,4 +1,4 @@
-import { onMounted, onBeforeUnmount, type Ref } from "vue";
+import { watch, onBeforeUnmount, type Ref } from "vue";
 
 export function useSyncScroll(
   editorScroll: Ref<HTMLElement | null>,
@@ -6,6 +6,8 @@ export function useSyncScroll(
   enabled: Ref<boolean>
 ) {
   let isSyncing = false;
+  let currentEditor: HTMLElement | null = null;
+  let currentPreview: HTMLElement | null = null;
 
   function syncScroll(source: HTMLElement, target: HTMLElement) {
     if (isSyncing || !enabled.value) return;
@@ -28,30 +30,39 @@ export function useSyncScroll(
   }
 
   function handleEditorScroll() {
-    if (editorScroll.value && previewScroll.value) {
-      syncScroll(editorScroll.value, previewScroll.value);
+    if (currentEditor && currentPreview) {
+      syncScroll(currentEditor, currentPreview);
     }
   }
 
   function handlePreviewScroll() {
-    if (editorScroll.value && previewScroll.value) {
-      syncScroll(previewScroll.value, editorScroll.value);
+    if (currentEditor && currentPreview) {
+      syncScroll(currentPreview, currentEditor);
     }
   }
 
   function attach() {
-    editorScroll.value?.addEventListener("scroll", handleEditorScroll, { passive: true });
-    previewScroll.value?.addEventListener("scroll", handlePreviewScroll, { passive: true });
+    detach();
+    currentEditor = editorScroll.value;
+    currentPreview = previewScroll.value;
+    currentEditor?.addEventListener("scroll", handleEditorScroll, { passive: true });
+    currentPreview?.addEventListener("scroll", handlePreviewScroll, { passive: true });
   }
 
   function detach() {
-    editorScroll.value?.removeEventListener("scroll", handleEditorScroll);
-    previewScroll.value?.removeEventListener("scroll", handlePreviewScroll);
+    currentEditor?.removeEventListener("scroll", handleEditorScroll);
+    currentPreview?.removeEventListener("scroll", handlePreviewScroll);
+    currentEditor = null;
+    currentPreview = null;
   }
 
-  onMounted(() => {
-    attach();
-  });
+  watch(
+    [editorScroll, previewScroll],
+    () => {
+      attach();
+    },
+    { flush: "post" }
+  );
 
   onBeforeUnmount(() => {
     detach();
