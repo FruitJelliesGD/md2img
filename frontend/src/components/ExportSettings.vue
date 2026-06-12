@@ -4,10 +4,7 @@
     <select
       :value="format"
       aria-label="Export format"
-      class="px-2 py-1 text-sm rounded border bg-transparent"
-      :class="theme === 'dark'
-        ? 'border-gray-600 text-gray-200 bg-gray-800'
-        : 'border-gray-300 text-gray-700 bg-white'"
+      class="px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800"
       @change="$emit('update:format', ($event.target as HTMLSelectElement).value as ExportFormat)"
     >
       <option value="png">
@@ -30,16 +27,10 @@
         min="100"
         max="4096"
         step="100"
-        class="w-20 px-2 py-1 text-sm rounded border bg-transparent"
-        :class="theme === 'dark'
-          ? 'border-gray-600 text-gray-200 bg-gray-800'
-          : 'border-gray-300 text-gray-700 bg-white'"
+        class="w-20 px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800"
         @input="$emit('update:width', Math.min(Math.max(Number(($event.target as HTMLInputElement).value), 100), 4096))"
       >
-      <span
-        class="text-xs"
-        :class="theme === 'dark' ? 'text-gray-400' : 'text-gray-500'"
-      >px</span>
+      <span class="text-xs text-gray-500 dark:text-gray-400">px</span>
     </div>
 
     <!-- Quality slider (only for jpeg/webp) -->
@@ -47,10 +38,7 @@
       v-if="format !== 'png'"
       class="flex items-center gap-2"
     >
-      <label
-        class="text-xs"
-        :class="theme === 'dark' ? 'text-gray-400' : 'text-gray-500'"
-      >{{ t('export.quality') }}</label>
+      <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('export.quality') }}</label>
       <input
         type="range"
         :value="quality"
@@ -60,10 +48,7 @@
         class="w-20"
         @input="$emit('update:quality', Number(($event.target as HTMLInputElement).value))"
       >
-      <span
-        class="text-xs"
-        :class="theme === 'dark' ? 'text-gray-400' : 'text-gray-500'"
-      >
+      <span class="text-xs text-gray-500 dark:text-gray-400">
         {{ Math.round(quality * 100) }}%
       </span>
     </div>
@@ -80,7 +65,6 @@ defineProps<{
   format: ExportFormat;
   width: number;
   quality: number;
-  theme: "light" | "dark";
 }>();
 
 defineEmits<{

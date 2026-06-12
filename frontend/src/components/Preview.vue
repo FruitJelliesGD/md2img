@@ -1,8 +1,7 @@
 <template>
   <div
     ref="previewRef"
-    class="h-full overflow-auto p-8"
-    :class="theme === 'dark' ? 'bg-[#0d1117]' : 'bg-white'"
+    class="h-full overflow-auto p-8 bg-white dark:bg-[#0d1117]"
   >
     <div
       ref="contentRef"

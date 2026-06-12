@@ -2,10 +2,7 @@
   <div
     role="status"
     aria-label="Document statistics"
-    class="flex items-center justify-end px-4 py-1 text-xs border-t"
-    :class="theme === 'dark'
-      ? 'bg-gray-900 border-gray-700 text-gray-400'
-      : 'bg-gray-50 border-gray-200 text-gray-500'"
+    class="flex items-center justify-end px-4 py-1 text-xs border-t bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400"
   >
     <span
       v-if="stats.chars > 80000"
@@ -32,6 +29,5 @@ defineProps<{
     words: number;
     chars: number;
   };
-  theme: "light" | "dark";
 }>();
 </script>

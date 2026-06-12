@@ -1,7 +1,6 @@
 <template>
   <div
-    class="h-screen flex flex-col"
-    :class="theme === 'dark' ? 'bg-gray-900' : 'bg-white'"
+    class="h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200"
   >
     <!-- Toolbar -->
     <Toolbar
@@ -21,13 +20,39 @@
       @show-api-doc="showApiDoc = true"
     />
 
+    <!-- Mobile tab bar -->
+    <div
+      v-if="isMobile"
+      class="flex border-b bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700"
+    >
+      <button
+        class="flex-1 py-2 text-sm font-medium transition-colors"
+        :class="mobileTab === 'editor'
+          ? 'text-blue-600 border-b-2 border-blue-600'
+          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
+        @click="mobileTab = 'editor'"
+      >
+        {{ t('export.editor') || 'Editor' }}
+      </button>
+      <button
+        class="flex-1 py-2 text-sm font-medium transition-colors"
+        :class="mobileTab === 'preview'
+          ? 'text-blue-600 border-b-2 border-blue-600'
+          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
+        @click="mobileTab = 'preview'"
+      >
+        {{ t('export.preview') || 'Preview' }}
+      </button>
+    </div>
+
     <!-- Main content: Editor + Preview -->
     <div class="flex-1 flex overflow-hidden">
       <!-- Editor panel -->
       <div
-        class="overflow-hidden"
-        :style="{ width: editorWidth + '%' }"
-        :class="theme === 'dark' ? 'bg-[#0d1117]' : 'bg-white'"
+        v-show="!isMobile || mobileTab === 'editor'"
+        class="overflow-hidden bg-white dark:bg-[#0d1117]"
+        :class="isMobile ? 'w-full' : ''"
+        :style="isMobile ? {} : { width: editorWidth + '%' }"
       >
         <Editor
           v-model="markdown"
@@ -35,8 +60,9 @@
         />
       </div>
 
-      <!-- Resizer -->
+      <!-- Resizer (desktop only) -->
       <div
+        v-if="!isMobile"
         class="resizer"
         :class="{ active: isResizing }"
         @mousedown="startResize"
@@ -44,8 +70,10 @@
 
       <!-- Preview panel -->
       <div
+        v-show="!isMobile || mobileTab === 'preview'"
         class="overflow-hidden"
-        :style="{ width: (100 - editorWidth) + '%' }"
+        :class="isMobile ? 'w-full' : ''"
+        :style="isMobile ? {} : { width: (100 - editorWidth) + '%' }"
       >
         <Preview
           ref="previewRef"
@@ -98,9 +126,12 @@ import { useTheme } from "./composables/useTheme";
 import { useMarkdown } from "./composables/useMarkdown";
 import { useExport, type ExportFormat } from "./composables/useExport";
 import { useI18n } from "./composables/useI18n";
+import { useMediaQuery } from "./composables/useMediaQuery";
 
 const { theme, toggleTheme } = useTheme();
 const { t, toggleLocale, locale } = useI18n();
+const isMobile = useMediaQuery("(max-width: 768px)");
+const mobileTab = ref<"editor" | "preview">("editor");
 
 const defaultMarkdown = `# Welcome to md2img
 

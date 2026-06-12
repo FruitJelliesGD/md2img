@@ -1,9 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-between px-4 py-2 border-b"
-    :class="theme === 'dark'
-      ? 'bg-gray-900 border-gray-700 text-gray-200'
-      : 'bg-gray-50 border-gray-200 text-gray-700'"
+    class="flex items-center justify-between px-4 py-2 border-b bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200"
   >
     <!-- Left: Logo & Theme Toggle -->
     <div class="flex items-center gap-3">
@@ -12,20 +9,14 @@
       </h1>
       <button
         aria-label="Toggle theme"
-        class="px-3 py-1 text-sm rounded-md transition-colors"
-        :class="theme === 'dark'
-          ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
-          : 'bg-gray-200 hover:bg-gray-300 text-gray-700'"
+        class="px-3 py-1 text-sm rounded-md transition-colors bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200"
         @click="$emit('toggleTheme')"
       >
         {{ theme === 'dark' ? '☀️ ' + t('theme.light') : '🌙 ' + t('theme.dark') }}
       </button>
       <button
         aria-label="Toggle language"
-        class="px-3 py-1 text-sm rounded-md transition-colors"
-        :class="theme === 'dark'
-          ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
-          : 'bg-gray-200 hover:bg-gray-300 text-gray-700'"
+        class="px-3 py-1 text-sm rounded-md transition-colors bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200"
         @click="$emit('toggleLocale')"
       >
         {{ locale === 'zh-CN' ? 'EN' : '中' }}
@@ -37,7 +28,6 @@
       :format="format"
       :width="width"
       :quality="quality"
-      :theme="theme"
       @update:format="$emit('update:format', $event)"
       @update:width="$emit('update:width', $event)"
       @update:quality="$emit('update:quality', $event)"
@@ -56,20 +46,14 @@
       <button
         :disabled="isExporting"
         aria-label="Copy to clipboard"
-        class="px-4 py-1.5 text-sm font-medium rounded-md border transition-colors"
-        :class="theme === 'dark'
-          ? 'border-gray-600 hover:bg-gray-700 text-gray-200 disabled:opacity-50'
-          : 'border-gray-300 hover:bg-gray-100 text-gray-700 disabled:opacity-50'"
+        class="px-4 py-1.5 text-sm font-medium rounded-md border transition-colors border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50"
         @click="$emit('copy')"
       >
         📋 {{ t('export.copy') }}
       </button>
       <button
         aria-label="Show API documentation"
-        class="px-3 py-1.5 text-sm rounded-md border transition-colors"
-        :class="theme === 'dark'
-          ? 'border-gray-600 hover:bg-gray-700 text-gray-200'
-          : 'border-gray-300 hover:bg-gray-100 text-gray-700'"
+        class="px-3 py-1.5 text-sm rounded-md border transition-colors border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
         @click="$emit('showApiDoc')"
       >
         📖 API
