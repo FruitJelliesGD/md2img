@@ -2,7 +2,7 @@ import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 import hljs from "highlight.js";
-import { configureMarked, ALL_CSS } from "@md2img/shared";
+import { configureMarked, ALL_CSS, HLJS_GITHUB_LIGHT, HLJS_GITHUB_DARK } from "@md2img/shared";
 
 const window = new JSDOM("").window;
 const purify = DOMPurify(window as any);
@@ -30,9 +30,7 @@ export function generateHTML(options: TemplateOptions): string {
   const { markdown, theme, width } = options;
   const htmlContent = purify.sanitize(marked.parse(markdown) as string);
 
-  const hljsTheme = theme === "dark"
-    ? "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github-dark.min.css"
-    : "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github.min.css";
+  const hljsCss = theme === "dark" ? HLJS_GITHUB_DARK : HLJS_GITHUB_LIGHT;
 
   return `<!DOCTYPE html>
 <html lang="en" data-theme="${theme}">
@@ -44,11 +42,11 @@ export function generateHTML(options: TemplateOptions): string {
     href="https://cdn.jsdelivr.net/npm/katex@0.16.45/dist/katex.min.css"
     crossorigin="anonymous"
   />
-  <link rel="stylesheet" href="${hljsTheme}" />
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html { margin: 0; padding: 0; }
     ${ALL_CSS}
+    ${hljsCss}
   </style>
 </head>
 <body>
