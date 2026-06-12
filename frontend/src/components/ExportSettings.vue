@@ -4,7 +4,7 @@
     <select
       :value="format"
       aria-label="Export format"
-      class="px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800"
+      class="px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
       @change="$emit('update:format', ($event.target as HTMLSelectElement).value as ExportFormat)"
     >
       <option value="png">
@@ -27,7 +27,7 @@
         min="100"
         max="4096"
         step="100"
-        class="w-20 px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800"
+        class="w-20 px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
         @input="$emit('update:width', Math.min(Math.max(Number(($event.target as HTMLInputElement).value), 100), 4096))"
       >
       <span class="text-xs text-gray-500 dark:text-gray-400">px</span>

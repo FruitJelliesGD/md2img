@@ -29,12 +29,6 @@ watch(
     if (previewRef.value) {
       savedScrollTop = previewRef.value.scrollTop;
     }
-  }
-);
-
-watch(
-  () => props.html,
-  () => {
     nextTick(() => {
       if (previewRef.value) {
         previewRef.value.scrollTop = savedScrollTop;

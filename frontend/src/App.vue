@@ -51,7 +51,7 @@
     </div>
 
     <!-- Main content: Editor + Preview -->
-    <div class="flex-1 flex overflow-hidden">
+    <div class="flex-1 flex overflow-hidden max-w-[2560px] mx-auto w-full">
       <!-- Editor panel -->
       <div
         v-show="!isMobile || mobileTab === 'editor'"
@@ -191,26 +191,24 @@ const exportWidth = ref(loadPersisted("md2img-export-width", 800));
 const exportQuality = ref(loadPersisted("md2img-export-quality", 0.92));
 
 let persistTimer: ReturnType<typeof setTimeout> | null = null;
-const pendingPersists: Array<() => void> = [];
+let pendingWrite: (() => void) | null = null;
 
 function persist(key: string, value: unknown) {
   if (persistTimer) clearTimeout(persistTimer);
-  const write = () => {
+  pendingWrite = () => {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch {
       // ignore quota errors
     }
   };
-  pendingPersists.length = 0;
-  pendingPersists.push(write);
-  persistTimer = setTimeout(write, 500);
+  persistTimer = setTimeout(pendingWrite, 500);
 }
 
 function flushPersist() {
   if (persistTimer) clearTimeout(persistTimer);
-  for (const fn of pendingPersists) fn();
-  pendingPersists.length = 0;
+  if (pendingWrite) pendingWrite();
+  pendingWrite = null;
 }
 
 watch(markdown, (v) => persist("md2img-markdown", v));
@@ -303,8 +301,10 @@ async function handleCopy() {
 }
 
 // Resizer
-const editorWidth = ref(50);
+const editorWidth = ref(loadPersisted("md2img-editor-width", 50));
 const isResizing = ref(false);
+
+watch(editorWidth, (v) => persist("md2img-editor-width", v));
 
 function startResize(e: MouseEvent) {
   isResizing.value = true;

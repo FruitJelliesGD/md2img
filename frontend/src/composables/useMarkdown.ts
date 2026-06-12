@@ -42,8 +42,8 @@ export function useMarkdown(source: () => string, options?: { debounceMs?: numbe
     const text = source();
     const lines = text.split("\n").length;
     const chars = text.length;
-    const cjkChars = (text.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || []).length;
-    const nonCjk = text.replace(/[\u4e00-\u9fff\u3400-\u4dbf]/g, " ");
+    const cjkChars = (text.match(/[\u4e00-\u9fff\u3400-\u4dbf\u3040-\u309f\u30a0-\u30ff\uac00-\ud7af]/g) || []).length;
+    const nonCjk = text.replace(/[\u4e00-\u9fff\u3400-\u4dbf\u3040-\u309f\u30a0-\u30ff\uac00-\ud7af]/g, " ");
     const words = cjkChars + (nonCjk.trim() ? nonCjk.trim().split(/\s+/).length : 0);
     return { lines, chars, words };
   });
