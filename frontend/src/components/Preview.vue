@@ -14,26 +14,39 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch, nextTick } from "vue";
 
-defineProps<{
+const props = defineProps<{
   html: string;
   theme: "light" | "dark";
 }>();
 
 const previewRef = ref<HTMLDivElement | null>(null);
 const contentRef = ref<HTMLDivElement | null>(null);
+let savedScrollTop = 0;
+
+watch(
+  () => props.html,
+  () => {
+    if (previewRef.value) {
+      savedScrollTop = previewRef.value.scrollTop;
+    }
+  }
+);
+
+watch(
+  () => props.html,
+  () => {
+    nextTick(() => {
+      if (previewRef.value) {
+        previewRef.value.scrollTop = savedScrollTop;
+      }
+    });
+  }
+);
 
 defineExpose({
-  /**
-   * Returns the outer scrollable container.
-   * Capturing this element requires unconstraining its height first.
-   */
   getPreviewElement: () => previewRef.value,
-  /**
-   * Returns the inner content element (.markdown-body).
-   * This element naturally expands to full content height.
-   */
   getContentElement: () => contentRef.value,
 });
 </script>

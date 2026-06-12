@@ -4,6 +4,8 @@
       v-if="visible"
       class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-sm font-medium z-50"
       :class="typeClasses"
+      @mouseenter="$emit('pause')"
+      @mouseleave="$emit('resume')"
     >
       {{ message }}
     </div>
@@ -17,6 +19,11 @@ const props = defineProps<{
   visible: boolean;
   message: string;
   type?: "success" | "error" | "info";
+}>();
+
+defineEmits<{
+  (e: "pause"): void;
+  (e: "resume"): void;
 }>();
 
 const typeClasses = computed(() => {

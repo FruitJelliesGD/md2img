@@ -68,11 +68,19 @@
       @close="showApiDoc = false"
     />
 
+    <ShortcutHelp
+      :visible="showShortcutHelp"
+      :theme="theme"
+      @close="showShortcutHelp = false"
+    />
+
     <!-- Toast -->
     <Toast
       :visible="toast.visible"
       :message="toast.message"
       :type="toast.type"
+      @pause="pauseToast"
+      @resume="resumeToast"
     />
   </div>
 </template>
@@ -84,6 +92,7 @@ import Preview from "./components/Preview.vue";
 import Toolbar from "./components/Toolbar.vue";
 import StatusBar from "./components/StatusBar.vue";
 const ApiDocModal = defineAsyncComponent(() => import("./components/ApiDocModal.vue"));
+const ShortcutHelp = defineAsyncComponent(() => import("./components/ShortcutHelp.vue"));
 import Toast from "./components/Toast.vue";
 import { useTheme } from "./composables/useTheme";
 import { useMarkdown } from "./composables/useMarkdown";
@@ -201,6 +210,16 @@ function showToast(message: string, type: "success" | "error" | "info" = "succes
   }, 2500);
 }
 
+function pauseToast() {
+  if (toastTimer) clearTimeout(toastTimer);
+}
+
+function resumeToast() {
+  toastTimer = setTimeout(() => {
+    toast.visible = false;
+  }, 2500);
+}
+
 // Download handler
 async function handleDownload() {
   try {
@@ -276,6 +295,9 @@ function startResize(e: MouseEvent) {
 // API doc modal
 const showApiDoc = ref(false);
 
+// Shortcut help modal
+const showShortcutHelp = ref(false);
+
 // Keyboard shortcuts
 function handleKeydown(e: KeyboardEvent) {
   if ((e.ctrlKey || e.metaKey) && e.key === "s") {
@@ -285,6 +307,10 @@ function handleKeydown(e: KeyboardEvent) {
   if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "C") {
     e.preventDefault();
     handleCopy();
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key === "/") {
+    e.preventDefault();
+    showShortcutHelp.value = !showShortcutHelp.value;
   }
 }
 

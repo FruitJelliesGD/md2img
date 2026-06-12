@@ -108,6 +108,9 @@ importers:
       '@codemirror/language-data':
         specifier: ^6.5.1
         version: 6.5.2
+      '@codemirror/search':
+        specifier: ^6.5.8
+        version: 6.7.0
       '@codemirror/state':
         specifier: ^6.5.0
         version: 6.6.0

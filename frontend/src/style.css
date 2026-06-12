@@ -203,6 +203,8 @@ html, body, #app {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background-color: rgba(128, 128, 128, 0.4); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background-color: rgba(128, 128, 128, 0.6); }
+.dark ::-webkit-scrollbar-thumb { background-color: rgba(200, 200, 200, 0.3); }
+.dark ::-webkit-scrollbar-thumb:hover { background-color: rgba(200, 200, 200, 0.5); }
 
 /* highlight.js dark theme overrides */
 .dark pre code.hljs { background-color: var(--md-pre-bg); color: var(--md-text); }
