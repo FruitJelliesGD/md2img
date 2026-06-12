@@ -86,8 +86,10 @@ import Toast from "./components/Toast.vue";
 import { useTheme } from "./composables/useTheme";
 import { useMarkdown } from "./composables/useMarkdown";
 import { useExport, type ExportFormat } from "./composables/useExport";
+import { useI18n } from "./composables/useI18n";
 
 const { theme, toggleTheme } = useTheme();
+const { t, toggleLocale, locale } = useI18n();
 
 const defaultMarkdown = `# Welcome to md2img
 
@@ -187,7 +189,7 @@ async function handleDownload() {
   try {
     const previewEl = previewRef.value?.getPreviewElement();
     if (!previewEl) {
-      showToast("无法获取预览元素", "error");
+      showToast(t("errors.noPreview"), "error");
       return;
     }
     await downloadImage(
@@ -199,9 +201,9 @@ async function handleDownload() {
       },
       theme.value
     );
-    showToast("图片已下载", "success");
+    showToast(t("export.copied"), "success");
   } catch (e) {
-    showToast("下载失败：" + (e instanceof Error ? e.message : "未知错误"), "error");
+    showToast(t("export.downloadFailed") + ": " + (e instanceof Error ? e.message : t("errors.unknownError")), "error");
   }
 }
 
@@ -210,7 +212,7 @@ async function handleCopy() {
   try {
     const previewEl = previewRef.value?.getPreviewElement();
     if (!previewEl) {
-      showToast("无法获取预览元素", "error");
+      showToast(t("errors.noPreview"), "error");
       return;
     }
     await copyToClipboard(
@@ -222,9 +224,9 @@ async function handleCopy() {
       },
       theme.value
     );
-    showToast("已复制到剪贴板", "success");
+    showToast(t("export.copied"), "success");
   } catch (e) {
-    showToast("复制失败：" + (e instanceof Error ? e.message : "未知错误"), "error");
+    showToast(t("export.copyFailed") + ": " + (e instanceof Error ? e.message : t("errors.unknownError")), "error");
   }
 }
 
