@@ -1,4 +1,4 @@
-import { ref, onMounted, onBeforeUnmount, type Ref } from "vue";
+import { onMounted, onBeforeUnmount, type Ref } from "vue";
 
 export function useSyncScroll(
   editorScroll: Ref<HTMLElement | null>,
