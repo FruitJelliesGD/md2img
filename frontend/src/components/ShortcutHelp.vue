@@ -35,18 +35,67 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch, onBeforeUnmount } from "vue";
 import { useI18n } from "../composables/useI18n";
 
 const { t } = useI18n();
 
-defineProps<{
+const props = defineProps<{
   visible: boolean;
   theme: "light" | "dark";
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   (e: "close"): void;
 }>();
+
+const modalRef = ref<HTMLDivElement | null>(null);
+let previousFocus: HTMLElement | null = null;
+
+function handleKeydown(e: KeyboardEvent) {
+  if (e.key === "Escape") {
+    emit("close");
+    return;
+  }
+  if (e.key === "Tab" && modalRef.value) {
+    const focusable = modalRef.value.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
+}
+
+watch(
+  () => props.visible,
+  (newVal) => {
+    if (newVal && modalRef.value) {
+      previousFocus = document.activeElement as HTMLElement;
+      document.addEventListener("keydown", handleKeydown);
+      const firstFocusable = modalRef.value.querySelector<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (firstFocusable) firstFocusable.focus();
+    }
+  }
+);
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keydown", handleKeydown);
+  if (previousFocus) previousFocus.focus();
+});
 
 const shortcuts = [
   { keys: "Ctrl+S", description: t("shortcuts.download") },

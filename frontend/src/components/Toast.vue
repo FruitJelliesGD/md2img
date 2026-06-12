@@ -2,6 +2,8 @@
   <Transition name="toast">
     <div
       v-if="visible"
+      role="status"
+      aria-live="polite"
       class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-sm font-medium z-50"
       :class="typeClasses"
       @mouseenter="$emit('pause')"

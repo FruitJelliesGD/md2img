@@ -23,9 +23,12 @@
     <!-- Mobile tab bar -->
     <div
       v-if="isMobile"
+      role="tablist"
       class="flex border-b bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700"
     >
       <button
+        role="tab"
+        :aria-selected="mobileTab === 'editor'"
         class="flex-1 py-2 text-sm font-medium transition-colors"
         :class="mobileTab === 'editor'
           ? 'text-blue-600 border-b-2 border-blue-600'
@@ -35,6 +38,8 @@
         {{ t('export.editor') }}
       </button>
       <button
+        role="tab"
+        :aria-selected="mobileTab === 'preview'"
         class="flex-1 py-2 text-sm font-medium transition-colors"
         :class="mobileTab === 'preview'
           ? 'text-blue-600 border-b-2 border-blue-600'
@@ -331,6 +336,7 @@ const showShortcutHelp = ref(false);
 
 // Keyboard shortcuts
 function handleKeydown(e: KeyboardEvent) {
+  if (showApiDoc.value || showShortcutHelp.value) return;
   if ((e.ctrlKey || e.metaKey) && e.key === "s") {
     e.preventDefault();
     handleDownload();

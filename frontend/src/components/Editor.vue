@@ -1,6 +1,7 @@
 <template>
   <div
     ref="editorContainer"
+    aria-label="Markdown editor"
     class="h-full w-full overflow-hidden"
   />
 </template>
