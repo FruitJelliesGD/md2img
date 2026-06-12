@@ -12,6 +12,13 @@
     <meta name="twitter:title" content="md2img - Markdown to Image Converter" />
     <meta name="twitter:description" content="Edit Markdown in real-time and export as high-quality images." />
     <title>md2img - Markdown to Image</title>
+    <script>
+      try {
+        if (localStorage.getItem("md2img-theme") === "dark") {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {}
+    </script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.45/dist/katex.min.css"
