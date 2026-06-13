@@ -4,14 +4,14 @@
 .overwatch-template {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   background-color: #ffffff;
-  color: #1d253a;
+  color: #333d47;
   padding: 2rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography */
+/* H1 - Main title */
 .overwatch-template h1 {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 36px;
@@ -21,7 +21,6 @@
   color: #1d253a;
   margin-top: 0;
   margin-bottom: 1rem;
-  text-align: center;
 }
 
 @media (min-width: 960px) {
@@ -31,6 +30,7 @@
   }
 }
 
+/* H2 - Sub-headings */
 .overwatch-template h2 {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 24px;
@@ -38,24 +38,15 @@
   color: #1d253a;
   margin-top: 0;
   margin-bottom: 0.5rem;
-  text-align: center;
 }
 
-@media (min-width: 720px) {
-  .overwatch-template h2 {
-    font-size: 28px;
-  }
-}
-
-/* Patch title (H3 in the original) */
+/* Patch title (.PatchNotes-patchTitle) */
 .overwatch-template h3 {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 24px;
   font-weight: 700;
   color: #1d253a;
   margin-bottom: 10px;
-  border-bottom: none;
-  padding-bottom: 0;
 }
 
 @media (min-width: 1200px) {
@@ -64,7 +55,7 @@
   }
 }
 
-/* Section title (H4 in the original) */
+/* Section title (.PatchNotes-sectionTitle) */
 .overwatch-template h4 {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 24px;
@@ -74,7 +65,7 @@
   margin-top: 1.5rem;
 }
 
-/* Hero name (H5 in the original) */
+/* Hero name (.PatchNotesHeroUpdate-name) */
 .overwatch-template h5 {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 18px;
@@ -147,12 +138,12 @@
 
 /* Links */
 .overwatch-template a {
-  color: #f06414;
+  color: #ffab2e;
   text-decoration: underline;
 }
 
 .overwatch-template a:hover {
-  color: #ff7926;
+  color: #f06414;
 }
 
 /* Strong and emphasis */
@@ -240,23 +231,32 @@
   border-radius: 4px;
 }
 
-/* Special Overwatch classes */
-.overwatch-template .patch-date {
+/* Patch date (.PatchNotes-date) */
+.overwatch-template .PatchNotes-date {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   font-weight: 700;
+  display: inline-block;
   color: #686868;
   text-transform: uppercase;
   margin-bottom: 5px;
 }
 
 @media (min-width: 720px) {
-  .overwatch-template .patch-date {
+  .overwatch-template .PatchNotes-date {
     font-size: 20px;
   }
 }
 
-.overwatch-template .section-description {
+/* Patch labels (.PatchNotes-labels) */
+.overwatch-template .PatchNotes-labels {
+  color: #686868;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+/* Section description (.PatchNotes-sectionDescription) */
+.overwatch-template .PatchNotes-sectionDescription {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -265,115 +265,188 @@
 }
 
 @media (min-width: 720px) {
-  .overwatch-template .section-description {
+  .overwatch-template .PatchNotes-sectionDescription {
     font-size: 20px;
   }
 }
 
-.overwatch-template .dev-notes {
+/* Dev notes (.PatchNotes-dev) */
+.overwatch-template .PatchNotes-dev {
+  font-family: "Config", "Segoe UI", Arial, sans-serif;
   border-left: 5px solid #ffab2e;
   font-weight: 500;
   padding-left: 15px;
   font-style: italic;
   color: #555555;
   margin: 15px 0;
-  background-color: #fafafa;
-  padding: 10px 15px;
-  border-radius: 0 4px 4px 0;
 }
 
-.overwatch-template .hero-card {
-  border: 2px solid rgba(0, 0, 0, 0.15);
-  border-radius: 2px;
-  margin-top: 50px;
-  background: #ffffff;
+.overwatch-template .PatchNotes-dev ul {
+  padding-left: 20px;
 }
 
-.overwatch-template .hero-card-header {
-  background-color: #f2f2f2;
-  padding: 15px 10px;
-  position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-}
-
-.overwatch-template .hero-card-body {
-  padding: 5px 20px;
-}
-
-.overwatch-template .ability-update {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 10px;
-}
-
-.overwatch-template .ability-icon {
-  background-color: hsla(223, 4%, 62%, 0.5);
-  border: 2px solid hsla(0, 0%, 100%, 0.6);
-  border-radius: 2px;
-  height: 40px;
-  min-width: 40px;
-  width: 40px;
-  position: relative;
-  margin-right: 10px;
-}
-
-@media (min-width: 960px) {
-  .overwatch-template .ability-icon {
-    height: 45px;
-    min-width: 45px;
-    width: 45px;
-  }
-}
-
-.overwatch-template .ability-name {
-  font-weight: 700;
-  margin-bottom: 5px;
-}
-
-/* Layout */
-.overwatch-template .content-container {
-  max-width: 750px;
-  padding: 0 10px;
-}
-
-@media (min-width: 960px) {
-  .overwatch-template .content-container {
-    padding: 0 20px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .overwatch-template .content-container {
-    display: inline-block;
-    margin-right: 50px;
-    padding: 0;
-    width: 750px;
-  }
-}
-
-/* Section spacing */
-.overwatch-template .patch-section {
+/* Section (.PatchNotes-section) */
+.overwatch-template .PatchNotes-section {
   margin: 35px 0;
 }
 
-.overwatch-template .patch-entry {
+/* Patch entry (.PatchNotes-patch) */
+.overwatch-template .PatchNotes-patch {
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   padding-bottom: 30px;
   padding-top: 30px;
 }
 
 @media (min-width: 1200px) {
-  .overwatch-template .patch-entry {
+  .overwatch-template .PatchNotes-patch {
     padding-bottom: 50px;
   }
 }
 
-.overwatch-template .patch-entry:last-child {
+.overwatch-template .PatchNotes-patch:last-child {
   border-bottom: none;
 }
 
-/* General update items */
-.overwatch-template .general-update-title {
+/* Hero update (.PatchNotesHeroUpdate) */
+.overwatch-template .PatchNotesHeroUpdate {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  margin-top: 50px;
+}
+
+/* Hero update header (.PatchNotesHeroUpdate-header) */
+.overwatch-template .PatchNotesHeroUpdate-header {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 15px 10px;
+  position: relative;
+}
+
+/* Hero icon (.PatchNotesHeroUpdate-icon) */
+.overwatch-template .PatchNotesHeroUpdate-icon {
+  background-color: #9b9da2;
+  border: 2px solid #fff;
+  border-radius: 2px;
+  bottom: 8px;
+  position: absolute;
+  width: 90px;
+}
+
+/* Hero name (.PatchNotesHeroUpdate-name) */
+.overwatch-template .PatchNotesHeroUpdate-name {
+  font-family: "Config", "Segoe UI", Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21px;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1200px) {
+  .overwatch-template .PatchNotesHeroUpdate-name {
+    font-size: 21px;
+    line-height: 25px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .overwatch-template .PatchNotesHeroUpdate-name {
+    font-size: 24px;
+    line-height: 27px;
+  }
+}
+
+/* Hero body (.PatchNotesHeroUpdate-body) */
+.overwatch-template .PatchNotesHeroUpdate-body {
+  padding: 5px 20px;
+}
+
+/* Dev notes in hero (.PatchNotesHeroUpdate-dev) */
+.overwatch-template .PatchNotes-dev.PatchNotesHeroUpdate-dev {
+  font-family: "Config", "Segoe UI", Arial, sans-serif;
+  border-left: 5px solid #ffab2e;
+  font-weight: 500;
+  padding-left: 15px;
+  font-style: italic;
+  color: #555555;
+  margin: 15px 0;
+}
+
+/* General updates (.PatchNotesHeroUpdate-generalUpdates) */
+.overwatch-template .PatchNotes-dev,
+.overwatch-template .PatchNotesHeroUpdate-abilitiesList,
+.overwatch-template .PatchNotesHeroUpdate-generalUpdates {
+  margin: 15px 0;
+}
+
+/* General title (.PatchNotesHeroUpdate-generalTitle) */
+.overwatch-template .PatchNotesHeroUpdate-generalTitle {
+  font-weight: 700;
+}
+
+/* Ability update (.PatchNotesAbilityUpdate) */
+.overwatch-template .PatchNotesAbilityUpdate {
+  align-items: flex-start;
+  display: flex;
+}
+
+.overwatch-template .PatchNotesAbilityUpdate + .PatchNotesAbilityUpdate {
+  margin-top: 10px;
+}
+
+/* Ability icon container (.PatchNotesAbilityUpdate-icon-container) */
+.overwatch-template .PatchNotesAbilityUpdate-icon-container,
+.overwatch-template .PatchNotesAbilityUpdate-icon-container--empty {
+  background-color: hsla(223, 4%, 62%, 0.5);
+  border: 2px solid hsla(0, 0%, 100%, 0.6);
+  border-radius: 2px;
+  height: 40px;
+  min-width: 40px;
+  padding: 5px;
+  position: relative;
+  width: 40px;
+}
+
+@media (min-width: 960px) {
+  .overwatch-template .PatchNotesAbilityUpdate-icon-container,
+  .overwatch-template .PatchNotesAbilityUpdate-icon-container--empty {
+    height: 45px;
+    min-width: 45px;
+    width: 45px;
+  }
+}
+
+/* Empty icon container (.PatchNotesAbilityUpdate-icon-container--empty) */
+.overwatch-template .PatchNotesAbilityUpdate-icon-container--empty {
+  background-color: hsla(223, 4%, 62%, 0.5);
+  border: 0;
+  height: 45px;
+}
+
+/* Ability icon (.PatchNotesAbilityUpdate-icon) */
+.overwatch-template .PatchNotesAbilityUpdate-icon {
+  left: 50%;
+  max-width: 80%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Ability name (.PatchNotesAbilityUpdate-name) */
+.overwatch-template .PatchNotesAbilityUpdate-name {
+  font-weight: 700;
+}
+
+/* Ability text (.PatchNotesAbilityUpdate-text) */
+.overwatch-template .PatchNotesAbilityUpdate-text {
+  padding-left: 10px;
+}
+
+/* General update (.PatchNotesGeneralUpdate) */
+.overwatch-template .PatchNotesGeneralUpdate + .PatchNotesGeneralUpdate {
+  margin-top: 20px;
+}
+
+/* General update title (.PatchNotesGeneralUpdate-title) */
+.overwatch-template .PatchNotesGeneralUpdate-title {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   font-weight: 700;
@@ -382,13 +455,24 @@
 }
 
 @media (min-width: 720px) {
-  .overwatch-template .general-update-title {
+  .overwatch-template .PatchNotesGeneralUpdate-title {
     font-size: 20px;
   }
 }
 
-/* Top of post button */
-.overwatch-template .top-of-post {
+/* Dev notes in general update (.PatchNotesGeneralUpdate .PatchNotes-dev) */
+.overwatch-template .PatchNotesGeneralUpdate .PatchNotes-dev {
+  margin-bottom: 10px;
+}
+
+/* Top of post (.PatchNotesTop) */
+.overwatch-template .PatchNotesTop {
+  margin-top: 35px;
+  text-align: center;
+}
+
+/* Top of post link (.PatchNotesTop-link) */
+.overwatch-template .PatchNotesTop-link {
   display: inline-block;
   margin-top: 1rem;
   padding: 8px 16px;
@@ -400,6 +484,6 @@
   border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-.overwatch-template .top-of-post:hover {
+.overwatch-template .PatchNotesTop-link:hover {
   background-color: #e6e6e6;
 }
