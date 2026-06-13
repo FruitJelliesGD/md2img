@@ -246,9 +246,7 @@
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   font-weight: 700;
-  color: hsla(0, 0%, 100%, 0.7);
-  text-transform: uppercase;
-  margin-bottom: 5px;
+  display: inline-block;
 }
 
 @media (min-width: 720px) {
@@ -287,14 +285,12 @@
   border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 2px;
   margin-top: 50px;
-  background: rgba(0, 0, 0, 0.05);
 }
 
 .overwatch-template .hero-card-header {
   background-color: rgba(0, 0, 0, 0.1);
   padding: 15px 10px;
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .overwatch-template .hero-card-body {
