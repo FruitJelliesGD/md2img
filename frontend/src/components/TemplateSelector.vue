@@ -19,8 +19,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { Template, getAllTemplates, getTemplate } from '@md2img/shared';
+import { useTemplates } from '../composables/useTemplates';
+
+const { setTemplate, clearTemplate, activeTemplate } = useTemplates();
 
 const templates = ref<Template[]>([]);
 const selectedTemplate = ref<string>('');
@@ -29,8 +32,19 @@ const currentTemplate = computed(() => {
   return selectedTemplate.value ? getTemplate(selectedTemplate.value) : null;
 });
 
+watch(selectedTemplate, (newValue) => {
+  if (newValue) {
+    setTemplate(newValue);
+  } else {
+    clearTemplate();
+  }
+});
+
 onMounted(() => {
   templates.value = getAllTemplates();
+  if (activeTemplate.value) {
+    selectedTemplate.value = activeTemplate.value.id;
+  }
 });
 
 defineExpose({
