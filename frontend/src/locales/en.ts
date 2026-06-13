@@ -24,6 +24,8 @@ export default {
     chars: "chars",
     charLimitWarning: "Approaching character limit",
     charLimitReached: "Character limit reached",
+    sync: "Sync",
+    scroll: "Scroll",
   },
   errors: {
     noPreview: "Cannot get preview element",

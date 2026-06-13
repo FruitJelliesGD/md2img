@@ -2,7 +2,7 @@
   <div
     role="status"
     aria-label="Document statistics"
-    class="flex items-center justify-between px-4 py-1.5 text-xs border-t bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 shadow-statusbar dark:shadow-statusbar-dark"
+    class="flex items-center justify-between px-4 py-1.5 text-xs border-t bg-gray-100 dark:bg-surface-800 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 shadow-statusbar dark:shadow-statusbar-dark"
   >
     <div class="flex items-center gap-3">
       <span class="font-medium text-gray-600 dark:text-gray-300">md2img</span>
@@ -17,7 +17,7 @@
         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
         </svg>
-        {{ syncScroll ? 'Sync' : 'Scroll' }}
+        {{ syncScroll ? t('status.sync') : t('status.scroll') }}
       </button>
     </div>
     <div class="flex items-center gap-4">

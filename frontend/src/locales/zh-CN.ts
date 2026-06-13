@@ -24,6 +24,8 @@ export default {
     chars: "字符",
     charLimitWarning: "即将达到字符上限",
     charLimitReached: "已达上限",
+    sync: "同步",
+    scroll: "滚动",
   },
   errors: {
     noPreview: "无法获取预览元素",
