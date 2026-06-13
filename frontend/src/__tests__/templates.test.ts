@@ -21,6 +21,6 @@ describe('Template System', () => {
 
   it('should have valid CSS', () => {
     expect(overwatchTemplate.css).toContain('.overwatch-template');
-    expect(overwatchTemplate.css).toContain('#00d4ff');
+    expect(overwatchTemplate.css).toContain('#1d253a');
   });
 });
