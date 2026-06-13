@@ -95,29 +95,15 @@ async function captureImage(
 
 export function useExport() {
   const isExporting = ref(false);
-  const { activeTemplate } = useTemplates();
+  const { applyTemplateCSS } = useTemplates();
 
   function applyTemplateToElement(element: HTMLElement): { restore: () => void } {
-    if (!activeTemplate.value) {
-      return { restore: () => {} };
-    }
-
-    const templateId = activeTemplate.value.id;
-    const wrapperClass = `${templateId}-template`;
-    const originalClass = element.className;
-
-    element.classList.add(wrapperClass);
-
-    const styleEl = document.createElement("style");
-    styleEl.textContent = activeTemplate.value.css;
-    document.head.appendChild(styleEl);
+    const originalContent = element.innerHTML;
+    element.innerHTML = applyTemplateCSS(originalContent);
 
     return {
       restore: () => {
-        element.className = originalClass;
-        if (styleEl.parentNode) {
-          styleEl.parentNode.removeChild(styleEl);
-        }
+        element.innerHTML = originalContent;
       },
     };
   }
