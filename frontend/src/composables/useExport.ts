@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { toPng, toJpeg, toCanvas } from "html-to-image";
+import { useTemplates } from "./useTemplates";
 
 export type ExportFormat = "png" | "jpeg" | "webp";
 
@@ -94,6 +95,32 @@ async function captureImage(
 
 export function useExport() {
   const isExporting = ref(false);
+  const { activeTemplate } = useTemplates();
+
+  function applyTemplateToElement(element: HTMLElement): { restore: () => void } {
+    if (!activeTemplate.value) {
+      return { restore: () => {} };
+    }
+
+    const templateId = activeTemplate.value.id;
+    const wrapperClass = `${templateId}-template`;
+    const originalClass = element.className;
+
+    element.classList.add(wrapperClass);
+
+    const styleEl = document.createElement("style");
+    styleEl.textContent = activeTemplate.value.css;
+    document.head.appendChild(styleEl);
+
+    return {
+      restore: () => {
+        element.className = originalClass;
+        if (styleEl.parentNode) {
+          styleEl.parentNode.removeChild(styleEl);
+        }
+      },
+    };
+  }
 
   async function downloadImage(
     element: HTMLElement,
@@ -101,10 +128,12 @@ export function useExport() {
     theme: "light" | "dark"
   ): Promise<void> {
     isExporting.value = true;
+    const { restore } = applyTemplateToElement(element);
     try {
       const blob = await captureImage(element, options, theme);
       triggerDownload(blob, options.format);
     } finally {
+      restore();
       isExporting.value = false;
     }
   }
@@ -115,6 +144,7 @@ export function useExport() {
     theme: "light" | "dark"
   ): Promise<void> {
     isExporting.value = true;
+    const { restore } = applyTemplateToElement(element);
     try {
       const pngBlob = await captureImage(element, { ...options, format: "png" }, theme);
       if (!navigator.clipboard?.write) {
@@ -124,6 +154,7 @@ export function useExport() {
         new ClipboardItem({ "image/png": pngBlob }),
       ]);
     } finally {
+      restore();
       isExporting.value = false;
     }
   }
