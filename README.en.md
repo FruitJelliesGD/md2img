@@ -27,6 +27,24 @@ An open-source tool to edit Markdown in real-time and export it as high-quality 
 | `H~2~O` | Subscript | `H~2~O` → H₂O |
 | `==text==` | Highlight | `==highlight==` → highlight |
 
+## 📋 Template System
+
+md2img supports custom templates for styling exported images.
+
+### Built-in Templates
+
+- **Overwatch Patch Notes**: Dark-themed template with blue accents, inspired by Overwatch patch notes
+
+### Using Templates
+
+1. Select a template from the dropdown in the toolbar
+2. The preview will update to show the template style
+3. Export the image to get the styled output
+
+### Template Preview
+
+Templates are applied in real-time in the preview panel, so you can see how your content will look before exporting.
+
 ## 🛠 Tech Stack
 
 | Layer | Technology |
