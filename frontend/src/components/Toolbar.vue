@@ -32,14 +32,17 @@
     </div>
 
     <!-- Center: Export Settings -->
-    <ExportSettings
-      :format="format"
-      :width="width"
-      :quality="quality"
-      @update:format="$emit('update:format', $event)"
-      @update:width="$emit('update:width', $event)"
-      @update:quality="$emit('update:quality', $event)"
-    />
+    <div class="flex items-center gap-4">
+      <TemplateSelector ref="templateSelector" />
+      <ExportSettings
+        :format="format"
+        :width="width"
+        :quality="quality"
+        @update:format="$emit('update:format', $event)"
+        @update:width="$emit('update:width', $event)"
+        @update:quality="$emit('update:quality', $event)"
+      />
+    </div>
 
     <!-- Right: Actions -->
     <div class="flex items-center gap-2">
@@ -81,10 +84,14 @@
 <script setup lang="ts">
 import ExportSettings from "./ExportSettings.vue";
 import BaseButton from "./BaseButton.vue";
+import TemplateSelector from "./TemplateSelector.vue";
 import type { ExportFormat } from "../composables/useExport";
 import { useI18n } from "../composables/useI18n";
+import { ref } from "vue";
 
 const { t } = useI18n();
+
+const templateSelector = ref<InstanceType<typeof TemplateSelector>>();
 
 defineProps<{
   theme: "light" | "dark";
