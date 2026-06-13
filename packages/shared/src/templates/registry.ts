@@ -1,17 +1,18 @@
 import { Template } from './types';
 
 const overwatchCSS = `
-/* Overwatch Patch Notes Template - Light Theme */
+/* Overwatch Patch Notes Template */
 /* Based on authentic styles from https://overwatch.blizzard.com/en-us/news/patch-notes/ */
 
 .overwatch-template {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
-  background-color: #ffffff;
-  color: #1d253a;
+  background-color: #004da7;
+  color: hsla(0, 0%, 100%, 0.9);
   padding: 2rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Typography */
@@ -38,7 +39,7 @@ const overwatchCSS = `
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #1d253a;
+  color: #ffffff;
   margin-top: 0;
   margin-bottom: 0.5rem;
   text-align: center;
@@ -55,7 +56,7 @@ const overwatchCSS = `
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #1d253a;
+  color: #ffffff;
   margin-bottom: 10px;
   border-bottom: none;
   padding-bottom: 0;
@@ -72,7 +73,7 @@ const overwatchCSS = `
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: #1d253a;
+  color: #ffffff;
   margin-bottom: 10px;
   margin-top: 1.5rem;
 }
@@ -84,7 +85,7 @@ const overwatchCSS = `
   font-weight: 700;
   line-height: 21px;
   text-transform: uppercase;
-  color: #1d253a;
+  color: #ffffff;
   margin: 0;
 }
 
@@ -107,7 +108,7 @@ const overwatchCSS = `
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   font-weight: 500;
-  color: #333d47;
+  color: hsla(0, 0%, 100%, 0.9);
   margin-bottom: 1rem;
   line-height: 1.5;
 }
@@ -129,7 +130,7 @@ const overwatchCSS = `
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   font-weight: 500;
-  color: #333d47;
+  color: hsla(0, 0%, 100%, 0.9);
   line-height: 1.5;
   margin-bottom: 0.5rem;
 }
@@ -150,36 +151,36 @@ const overwatchCSS = `
 
 /* Links */
 .overwatch-template a {
-  color: #f06414;
+  color: #ffab2e;
   text-decoration: underline;
 }
 
 .overwatch-template a:hover {
-  color: #ff7926;
+  color: #ffffff;
 }
 
 /* Strong and emphasis */
 .overwatch-template strong {
   font-weight: 700;
-  color: #1d253a;
+  color: #ffffff;
 }
 
 .overwatch-template em {
   font-style: italic;
-  color: #333d47;
+  color: hsla(0, 0%, 100%, 0.9);
 }
 
 /* Code */
 .overwatch-template code {
   font-family: "Consolas", "Monaco", "Courier New", monospace;
-  background-color: #f2f2f2;
+  background-color: rgba(0, 0, 0, 0.2);
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 0.9em;
 }
 
 .overwatch-template pre {
-  background-color: #f2f2f2;
+  background-color: rgba(0, 0, 0, 0.2);
   padding: 1rem;
   border-radius: 4px;
   overflow-x: auto;
@@ -197,9 +198,9 @@ const overwatchCSS = `
   border-left: 5px solid #ffab2e;
   padding-left: 15px;
   font-style: italic;
-  color: #555555;
+  color: hsla(0, 0%, 100%, 0.9);
   margin: 15px 0;
-  background-color: #fafafa;
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 10px 15px;
   border-radius: 0 4px 4px 0;
 }
@@ -214,25 +215,25 @@ const overwatchCSS = `
 
 .overwatch-template th,
 .overwatch-template td {
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid hsla(0, 0%, 100%, 0.3);
   padding: 12px 15px;
   text-align: left;
 }
 
 .overwatch-template th {
-  background-color: #f2f2f2;
+  background-color: rgba(0, 0, 0, 0.1);
   font-weight: 700;
-  color: #1d253a;
+  color: #ffffff;
 }
 
 .overwatch-template tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Horizontal rule */
 .overwatch-template hr {
   border: none;
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  border-top: 1px solid hsla(0, 0%, 100%, 0.3);
   margin: 2rem 0;
 }
 
@@ -248,7 +249,7 @@ const overwatchCSS = `
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   font-weight: 700;
-  color: #686868;
+  color: hsla(0, 0%, 100%, 0.7);
   text-transform: uppercase;
   margin-bottom: 5px;
 }
@@ -263,7 +264,7 @@ const overwatchCSS = `
   font-family: "Config", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   font-weight: 500;
-  color: #333d47;
+  color: hsla(0, 0%, 100%, 0.9);
   margin-bottom: 1rem;
 }
 
@@ -278,25 +279,25 @@ const overwatchCSS = `
   font-weight: 500;
   padding-left: 15px;
   font-style: italic;
-  color: #555555;
+  color: hsla(0, 0%, 100%, 0.9);
   margin: 15px 0;
-  background-color: #fafafa;
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 10px 15px;
   border-radius: 0 4px 4px 0;
 }
 
 .overwatch-template .hero-card {
-  border: 2px solid rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 2px;
   margin-top: 50px;
-  background: #ffffff;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .overwatch-template .hero-card-header {
-  background-color: #f2f2f2;
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 15px 10px;
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .overwatch-template .hero-card-body {
@@ -331,6 +332,7 @@ const overwatchCSS = `
 .overwatch-template .ability-name {
   font-weight: 700;
   margin-bottom: 5px;
+  color: #ffffff;
 }
 
 /* Layout */
@@ -360,7 +362,7 @@ const overwatchCSS = `
 }
 
 .overwatch-template .patch-entry {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.3);
   padding-bottom: 30px;
   padding-top: 30px;
 }
@@ -381,7 +383,7 @@ const overwatchCSS = `
   font-size: 16px;
   font-weight: 700;
   margin: 10px 0;
-  color: #1d253a;
+  color: #ffffff;
 }
 
 @media (min-width: 720px) {
@@ -395,24 +397,24 @@ const overwatchCSS = `
   display: inline-block;
   margin-top: 1rem;
   padding: 8px 16px;
-  background-color: #f2f2f2;
+  background-color: hsla(0, 0%, 100%, 0.7);
   color: #1d253a;
   text-decoration: none;
   border-radius: 4px;
   font-weight: 500;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 2px solid #ffffff;
 }
 
 .overwatch-template .top-of-post:hover {
-  background-color: #e6e6e6;
+  background-color: #ffffff;
 }
 `;
 
 export const overwatchTemplate: Template = {
   id: 'overwatch',
   name: 'Overwatch Patch Notes',
-  description: 'Light-themed template based on authentic Overwatch patch notes style',
-  preview: 'White background with dark navy text, orange accents, and professional typography',
+  description: 'Authentic Overwatch patch notes style with blue background and white text',
+  preview: 'Blue background (#004da7) with white text, orange accents, and professional typography',
   css: overwatchCSS,
   author: 'md2img',
   version: '1.0.0'
