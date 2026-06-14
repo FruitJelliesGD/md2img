@@ -22,7 +22,7 @@ const overwatchCSS = `
   font-weight: 700;
   line-height: 39px;
   text-transform: uppercase;
-  color: #1d253a;
+  color: #ffffff;
   margin-top: 0;
   margin-bottom: 1rem;
 }
@@ -283,6 +283,7 @@ const overwatchCSS = `
   font-style: italic;
   color: hsla(0, 0%, 100%, 0.9);
   margin: 15px 0;
+  background-color: transparent;
 }
 
 .overwatch-template .PatchNotes-dev ul {
@@ -296,7 +297,6 @@ const overwatchCSS = `
 
 /* Patch entry (.PatchNotes-patch) */
 .overwatch-template .PatchNotes-patch {
-  border-bottom: 1px solid hsla(0, 0%, 100%, 0.3);
   padding-bottom: 30px;
   padding-top: 30px;
 }
@@ -305,10 +305,6 @@ const overwatchCSS = `
   .overwatch-template .PatchNotes-patch {
     padding-bottom: 50px;
   }
-}
-
-.overwatch-template .PatchNotes-patch:last-child {
-  border-bottom: none;
 }
 
 /* Hero update (.PatchNotesHeroUpdate) */
@@ -373,6 +369,7 @@ const overwatchCSS = `
   font-style: italic;
   color: hsla(0, 0%, 100%, 0.9);
   margin: 15px 0;
+  background-color: transparent;
 }
 
 /* General updates (.PatchNotesHeroUpdate-generalUpdates) */
@@ -470,6 +467,7 @@ const overwatchCSS = `
 /* Dev notes in general update (.PatchNotesGeneralUpdate .PatchNotes-dev) */
 .overwatch-template .PatchNotesGeneralUpdate .PatchNotes-dev {
   margin-bottom: 10px;
+  background-color: transparent;
 }
 
 /* Top of post (.PatchNotesTop) */
