@@ -35,11 +35,12 @@ describe('useTemplates composable', () => {
     expect(result).toContain(content);
   });
 
-  it('should add style tag when template is active', () => {
+  it('should wrap content in template container when template is active', () => {
     templates.setTemplate('overwatch');
     const content = '<p>Hello World</p>';
     const result = templates.applyTemplateCSS(content);
-    expect(result).toContain('<style>');
-    expect(result).toContain('.overwatch-template');
+    expect(result).toContain('<div class="overwatch-template">');
+    expect(result).toContain(content);
+    expect(result).toContain('</div>');
   });
 });

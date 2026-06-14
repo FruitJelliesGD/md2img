@@ -92,6 +92,25 @@ async function captureImage(
   }
 }
 
+async function copyBlobToClipboard(blob: Blob): Promise<void> {
+  if (navigator.clipboard && typeof navigator.clipboard.write === "function") {
+    await navigator.clipboard.write([
+      new ClipboardItem({ "image/png": blob }),
+    ]);
+    return;
+  }
+
+  // Fallback: download the image instead of copying
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `clipboard-${Date.now()}.png`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
 export function useExport() {
   const isExporting = ref(false);
   const { activeTemplate } = useTemplates();
@@ -118,33 +137,7 @@ export function useExport() {
     isExporting.value = true;
     try {
       const pngBlob = await captureImage(element, { ...options, format: "png" }, theme, !!activeTemplate.value);
-
-      if (navigator.clipboard && typeof navigator.clipboard.write === "function") {
-        await navigator.clipboard.write([
-          new ClipboardItem({ "image/png": pngBlob }),
-        ]);
-      } else {
-        // Fallback: create a temporary image and copy
-        const url = URL.createObjectURL(pngBlob);
-        const img = document.createElement("img");
-        img.src = url;
-        document.body.appendChild(img);
-        img.style.position = "fixed";
-        img.style.left = "-9999px";
-        img.style.top = "-9999px";
-
-        // Try to copy using execCommand
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.selectNode(img);
-        selection?.removeAllRanges();
-        selection?.addRange(range);
-
-        document.execCommand("copy");
-        selection?.removeAllRanges();
-        document.body.removeChild(img);
-        URL.revokeObjectURL(url);
-      }
+      await copyBlobToClipboard(pngBlob);
     } finally {
       isExporting.value = false;
     }
