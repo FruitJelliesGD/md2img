@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import { Template, getAllTemplates, getTemplate } from '@md2img/shared';
+import { Template, getAllTemplates } from '@md2img/shared';
 import { useTemplates } from '../composables/useTemplates';
 
 const { setTemplate, clearTemplate, activeTemplate } = useTemplates();
