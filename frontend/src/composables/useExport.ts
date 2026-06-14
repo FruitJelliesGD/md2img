@@ -48,6 +48,13 @@ function unconstrainElement(el: HTMLElement): () => void {
   };
 }
 
+function cloneElementWithTemplate(element: HTMLElement, applyTemplateCSS: (content: string) => string): HTMLElement {
+  const clone = element.cloneNode(true) as HTMLElement;
+  const originalContent = clone.innerHTML;
+  clone.innerHTML = applyTemplateCSS(originalContent);
+  return clone;
+}
+
 async function captureImage(
   element: HTMLElement,
   options: ExportOptions,
@@ -97,29 +104,26 @@ export function useExport() {
   const isExporting = ref(false);
   const { applyTemplateCSS } = useTemplates();
 
-  function applyTemplateToElement(element: HTMLElement): { restore: () => void } {
-    const originalContent = element.innerHTML;
-    element.innerHTML = applyTemplateCSS(originalContent);
-
-    return {
-      restore: () => {
-        element.innerHTML = originalContent;
-      },
-    };
-  }
-
   async function downloadImage(
     element: HTMLElement,
     options: ExportOptions,
     theme: "light" | "dark"
   ): Promise<void> {
     isExporting.value = true;
-    const { restore } = applyTemplateToElement(element);
     try {
-      const blob = await captureImage(element, options, theme);
-      triggerDownload(blob, options.format);
+      const clone = cloneElementWithTemplate(element, applyTemplateCSS);
+      document.body.appendChild(clone);
+      clone.style.position = "absolute";
+      clone.style.left = "-9999px";
+      clone.style.top = "-9999px";
+
+      try {
+        const blob = await captureImage(clone, options, theme);
+        triggerDownload(blob, options.format);
+      } finally {
+        document.body.removeChild(clone);
+      }
     } finally {
-      restore();
       isExporting.value = false;
     }
   }
@@ -130,17 +134,25 @@ export function useExport() {
     theme: "light" | "dark"
   ): Promise<void> {
     isExporting.value = true;
-    const { restore } = applyTemplateToElement(element);
     try {
-      const pngBlob = await captureImage(element, { ...options, format: "png" }, theme);
-      if (!navigator.clipboard?.write) {
-        throw new Error("Clipboard API not supported in this browser");
+      const clone = cloneElementWithTemplate(element, applyTemplateCSS);
+      document.body.appendChild(clone);
+      clone.style.position = "absolute";
+      clone.style.left = "-9999px";
+      clone.style.top = "-9999px";
+
+      try {
+        const pngBlob = await captureImage(clone, { ...options, format: "png" }, theme);
+        if (!navigator.clipboard?.write) {
+          throw new Error("Clipboard API not supported in this browser");
+        }
+        await navigator.clipboard.write([
+          new ClipboardItem({ "image/png": pngBlob }),
+        ]);
+      } finally {
+        document.body.removeChild(clone);
       }
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": pngBlob }),
-      ]);
     } finally {
-      restore();
       isExporting.value = false;
     }
   }
