@@ -25,6 +25,7 @@ const overwatchCSS = `
   color: #ffffff;
   margin-top: 0;
   margin-bottom: 1rem;
+  border-bottom: none;
 }
 
 @media (min-width: 960px) {
@@ -42,6 +43,7 @@ const overwatchCSS = `
   color: #ffffff;
   margin-top: 0;
   margin-bottom: 0.5rem;
+  border-bottom: none;
 }
 
 /* Patch title (.PatchNotes-patchTitle) */
@@ -51,6 +53,7 @@ const overwatchCSS = `
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 10px;
+  border-bottom: none;
 }
 
 @media (min-width: 1200px) {
@@ -67,6 +70,7 @@ const overwatchCSS = `
   color: #ffffff;
   margin-bottom: 10px;
   margin-top: 1.5rem;
+  border-bottom: none;
 }
 
 /* Hero name (.PatchNotesHeroUpdate-name) */
@@ -78,6 +82,7 @@ const overwatchCSS = `
   text-transform: uppercase;
   color: #ffffff;
   margin: 0;
+  border-bottom: none;
 }
 
 @media (min-width: 1200px) {
