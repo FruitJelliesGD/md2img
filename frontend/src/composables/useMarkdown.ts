@@ -8,6 +8,9 @@ configureMarked();
 
 const renderer = {
   code({ text, lang }: { text: string; lang?: string; escaped?: boolean }) {
+    if (lang === "hero") {
+      return marked.parse(`\`\`\`hero\n${text}\n\`\`\``) as string;
+    }
     const language = lang && hljs.getLanguage(lang) ? lang : "plaintext";
     const highlighted = hljs.highlight(text, { language }).value;
     const langClass = `language-${language}`;
