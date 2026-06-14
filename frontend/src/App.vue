@@ -55,7 +55,7 @@
       <!-- Editor panel -->
       <div
         v-show="!isMobile || mobileTab === 'editor'"
-        class="overflow-hidden bg-white dark:bg-[#0d1117]"
+        class="overflow-hidden bg-white dark:bg-[#004da7]"
         :class="isMobile ? 'w-full' : ''"
         :style="isMobile ? {} : { width: editorWidth + '%' }"
       >
