@@ -64,29 +64,27 @@ async function captureImage(
   try {
     const baseOpts = getBaseOptions(theme, templateActive);
 
+    let dataUrl: string;
     if (options.format === "png") {
-      const dataUrl = await toPng(element, baseOpts);
-      const resp = await fetch(dataUrl);
-      return resp.blob();
+      dataUrl = await toPng(element, baseOpts);
+    } else if (options.format === "jpeg") {
+      dataUrl = await toJpeg(element, { ...baseOpts, quality: options.quality });
+    } else {
+      const canvas = await toCanvas(element, baseOpts);
+      return new Promise<Blob>((resolve, reject) => {
+        canvas.toBlob(
+          (b) => {
+            if (b) resolve(b);
+            else reject(new Error("Failed to convert canvas to WebP blob"));
+          },
+          "image/webp",
+          options.quality
+        );
+      });
     }
 
-    if (options.format === "jpeg") {
-      const dataUrl = await toJpeg(element, { ...baseOpts, quality: options.quality });
-      const resp = await fetch(dataUrl);
-      return resp.blob();
-    }
-
-    const canvas = await toCanvas(element, baseOpts);
-    return new Promise<Blob>((resolve, reject) => {
-      canvas.toBlob(
-        (b) => {
-          if (b) resolve(b);
-          else reject(new Error("Failed to convert canvas to WebP blob"));
-        },
-        "image/webp",
-        options.quality
-      );
-    });
+    const resp = await fetch(dataUrl);
+    return resp.blob();
   } finally {
     element.style.width = origWidth;
     element.style.minWidth = origMinWidth;
@@ -120,12 +118,33 @@ export function useExport() {
     isExporting.value = true;
     try {
       const pngBlob = await captureImage(element, { ...options, format: "png" }, theme, !!activeTemplate.value);
-      if (!navigator.clipboard?.write) {
-        throw new Error("Clipboard API not supported in this browser");
+
+      if (navigator.clipboard && typeof navigator.clipboard.write === "function") {
+        await navigator.clipboard.write([
+          new ClipboardItem({ "image/png": pngBlob }),
+        ]);
+      } else {
+        // Fallback: create a temporary image and copy
+        const url = URL.createObjectURL(pngBlob);
+        const img = document.createElement("img");
+        img.src = url;
+        document.body.appendChild(img);
+        img.style.position = "fixed";
+        img.style.left = "-9999px";
+        img.style.top = "-9999px";
+
+        // Try to copy using execCommand
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNode(img);
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+
+        document.execCommand("copy");
+        selection?.removeAllRanges();
+        document.body.removeChild(img);
+        URL.revokeObjectURL(url);
       }
-      await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": pngBlob }),
-      ]);
     } finally {
       isExporting.value = false;
     }

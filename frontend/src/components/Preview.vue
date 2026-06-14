@@ -5,12 +5,11 @@
     :class="activeTemplate ? '' : 'bg-white dark:bg-[#0d1117]'"
     :style="activeTemplate ? { backgroundColor: '#004da7' } : {}"
   >
-    <div v-if="activeTemplate" v-html="templateStyle"></div>
     <div
       ref="contentRef"
       class="markdown-body mx-auto max-w-4xl"
       :class="activeTemplate ? `${activeTemplate.id}-template` : ''"
-      v-html="html"
+      v-html="processedHtml"
     />
   </div>
 </template>
@@ -19,15 +18,18 @@
 import { computed, ref, watch, nextTick } from "vue";
 import { useTemplates } from "../composables/useTemplates";
 
-const { activeTemplate } = useTemplates();
+const { activeTemplate, applyTemplateCSS } = useTemplates();
 
 const props = defineProps<{
   html: string;
   theme: "light" | "dark";
 }>();
 
-const templateStyle = computed(() => {
-  return activeTemplate.value ? `<style>${activeTemplate.value.css}</style>` : '';
+const processedHtml = computed(() => {
+  if (activeTemplate.value && props.html) {
+    return applyTemplateCSS(props.html);
+  }
+  return props.html;
 });
 
 const previewRef = ref<HTMLDivElement | null>(null);
