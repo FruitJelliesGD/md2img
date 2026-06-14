@@ -13,7 +13,7 @@ export interface ExportOptions {
 function getBaseOptions(theme: "light" | "dark") {
   return {
     pixelRatio: 2,
-    backgroundColor: theme === "dark" ? "#004da7" : "#ffffff",
+    backgroundColor: theme === "dark" ? "#0d1117" : "#ffffff",
   };
 }
 

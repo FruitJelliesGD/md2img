@@ -32,7 +32,7 @@ const themeCompartment = new Compartment();
 function createTheme(dark: boolean) {
   return EditorView.theme({
     "&": {
-      backgroundColor: dark ? "#004da7" : "#ffffff",
+      backgroundColor: dark ? "#0d1117" : "#ffffff",
       color: dark ? "#e6edf3" : "#1f2328",
     },
     ".cm-content": {
@@ -53,7 +53,7 @@ function createTheme(dark: boolean) {
       color: dark ? "#e6edf3" : "#1f2328",
     },
     ".cm-gutters": {
-      backgroundColor: dark ? "#004da7" : "#ffffff",
+      backgroundColor: dark ? "#0d1117" : "#ffffff",
       color: dark ? "#636c76" : "#636c76",
       borderRight: `1px solid ${dark ? "#21262d" : "#d1d9e0"}`,
     },

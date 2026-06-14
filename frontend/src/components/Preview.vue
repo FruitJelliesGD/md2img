@@ -1,7 +1,7 @@
 <template>
   <div
     ref="previewRef"
-    class="h-full overflow-auto p-8 bg-white dark:bg-[#004da7]"
+    class="h-full overflow-auto p-8 bg-white dark:bg-[#0d1117]"
   >
     <div v-if="activeTemplate" v-html="templateStyle"></div>
     <div
