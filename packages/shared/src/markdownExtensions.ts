@@ -68,15 +68,16 @@ const heroBlock = {
   name: "hero",
   level: "block" as const,
   start(src: string) {
-    return src.match(/^```hero\s+(.+)/m)?.index;
+    const match = src.match(/^```hero(?:\s+(.+))?$/m);
+    return match ? match.index : undefined;
   },
   tokenizer(src: string) {
-    const match = src.match(/^```hero\s+(.+)\n([\s\S]*?)^```\n?/m);
+    const match = src.match(/^```hero(?:\s+(.+))?\n([\s\S]*?)^```\s*$/m);
     if (match) {
       return {
         type: "hero",
         raw: match[0],
-        name: match[1].trim(),
+        name: match[1]?.trim() || "",
         text: match[2].trim(),
       };
     }
