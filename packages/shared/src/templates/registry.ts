@@ -188,6 +188,10 @@ const overwatchCSS = `
   border-radius: 0 4px 4px 0;
 }
 
+.overwatch-template blockquote p {
+  font-size: 16px;
+}
+
 /* Tables */
 .overwatch-template table {
   width: 100%;
