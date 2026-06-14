@@ -1,4 +1,4 @@
-import { ref, computed, onUnmounted } from 'vue';
+import { ref, computed } from 'vue';
 import { Template, getTemplate } from '@md2img/shared';
 
 const activeTemplateId = ref<string>('');
