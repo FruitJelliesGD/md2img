@@ -68,43 +68,40 @@ const heroBlock = {
   name: "hero",
   level: "block" as const,
   start(src: string) {
-    return src.match(/^```hero\n/m)?.index;
+    return src.match(/^```hero\s+(.+)/m)?.index;
   },
   tokenizer(src: string) {
-    const match = src.match(/^```hero\n([\s\S]*?)^```\n?/m);
+    const match = src.match(/^```hero\s+(.+)\n([\s\S]*?)^```\n?/m);
     if (match) {
       return {
         type: "hero",
         raw: match[0],
-        text: match[1].trim(),
+        name: match[1].trim(),
+        text: match[2].trim(),
       };
     }
   },
   renderer(token: any) {
+    const heroName = token.name;
     const content = token.text;
     const lines = content.split("\n");
 
-    let name = "";
-    let icon = "";
     let devNotes = "";
     let changes = "";
-    const abilities: { name: string; changes: string }[] = [];
+    const abilities: { name: string; icon: string; changes: string }[] = [];
     let currentSection = "";
     let currentAbility = "";
+    let currentAbilityIcon = "";
     let currentAbilityChanges: string[] = [];
     let currentChanges: string[] = [];
     let currentDevNotes: string[] = [];
 
     for (const line of lines) {
-      const nameMatch = line.match(/^name:\s*(.+)/);
-      const iconMatch = line.match(/^icon:\s*(.+)/);
+      const abilityMatch = line.match(/^####\s+(.+)/);
+      const abilityIconMatch = line.match(/^icon:\s*(.+)/);
 
-      if (nameMatch) {
-        name = nameMatch[1].trim();
-        continue;
-      }
-      if (iconMatch) {
-        icon = iconMatch[1].trim();
+      if (abilityIconMatch) {
+        currentAbilityIcon = abilityIconMatch[1].trim();
         continue;
       }
 
@@ -112,9 +109,11 @@ const heroBlock = {
         if (currentAbility && currentAbilityChanges.length > 0) {
           abilities.push({
             name: currentAbility,
+            icon: currentAbilityIcon,
             changes: currentAbilityChanges.join("\n"),
           });
           currentAbility = "";
+          currentAbilityIcon = "";
           currentAbilityChanges = [];
         }
         if (currentChanges.length > 0) {
@@ -133,10 +132,12 @@ const heroBlock = {
         if (currentAbility && currentAbilityChanges.length > 0) {
           abilities.push({
             name: currentAbility,
+            icon: currentAbilityIcon,
             changes: currentAbilityChanges.join("\n"),
           });
         }
         currentAbility = line.replace("#### ", "").trim();
+        currentAbilityIcon = "";
         currentAbilityChanges = [];
         continue;
       }
@@ -153,6 +154,7 @@ const heroBlock = {
     if (currentAbility && currentAbilityChanges.length > 0) {
       abilities.push({
         name: currentAbility,
+        icon: currentAbilityIcon,
         changes: currentAbilityChanges.join("\n"),
       });
     }
@@ -162,10 +164,6 @@ const heroBlock = {
     if (currentDevNotes.length > 0) {
       devNotes = currentDevNotes.join("\n");
     }
-
-    const iconHtml = icon
-      ? `<img class="PatchNotesHeroUpdate-icon" src="${icon}" alt="${name}">`
-      : "";
 
     const devNotesHtml = devNotes
       ? `<div class="PatchNotes-dev PatchNotesHeroUpdate-dev">${marked.parse(devNotes.trim())}</div>`
@@ -180,7 +178,7 @@ const heroBlock = {
           .map(
             (a) => `
         <div class="PatchNotesAbilityUpdate">
-          <div class="PatchNotesAbilityUpdate-icon-container--empty"></div>
+          ${a.icon ? `<div class="PatchNotesAbilityUpdate-icon-container"><img class="PatchNotesAbilityUpdate-icon" src="${a.icon}"></div>` : `<div class="PatchNotesAbilityUpdate-icon-container--empty"></div>`}
           <div class="PatchNotesAbilityUpdate-text">
             <div class="PatchNotesAbilityUpdate-name">${a.name}</div>
             <div class="PatchNotesAbilityUpdate-detailList">${marked.parse(a.changes.trim())}</div>
@@ -193,8 +191,7 @@ const heroBlock = {
     return `
 <div class="PatchNotesHeroUpdate">
   <div class="PatchNotesHeroUpdate-header">
-    ${iconHtml}
-    <h5 class="PatchNotesHeroUpdate-name">${name}</h5>
+    <h5 class="PatchNotesHeroUpdate-name">${heroName}</h5>
   </div>
   <div class="PatchNotesHeroUpdate-body">
     ${devNotesHtml}
