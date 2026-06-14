@@ -10,10 +10,10 @@ export interface ExportOptions {
   quality: number;
 }
 
-function getBaseOptions(theme: "light" | "dark") {
+function getBaseOptions(theme: "light" | "dark", templateActive: boolean) {
   return {
     pixelRatio: 2,
-    backgroundColor: theme === "dark" ? "#0d1117" : "#ffffff",
+    backgroundColor: templateActive ? "#004da7" : (theme === "dark" ? "#0d1117" : "#ffffff"),
   };
 }
 
@@ -48,17 +48,11 @@ function unconstrainElement(el: HTMLElement): () => void {
   };
 }
 
-function cloneElementWithTemplate(element: HTMLElement, applyTemplateCSS: (content: string) => string): HTMLElement {
-  const clone = element.cloneNode(true) as HTMLElement;
-  const originalContent = clone.innerHTML;
-  clone.innerHTML = applyTemplateCSS(originalContent);
-  return clone;
-}
-
 async function captureImage(
   element: HTMLElement,
   options: ExportOptions,
-  theme: "light" | "dark"
+  theme: "light" | "dark",
+  templateActive: boolean
 ): Promise<Blob> {
   const origWidth = element.style.width;
   const origMinWidth = element.style.minWidth;
@@ -68,7 +62,7 @@ async function captureImage(
   const restoreHeight = unconstrainElement(element);
 
   try {
-    const baseOpts = getBaseOptions(theme);
+    const baseOpts = getBaseOptions(theme, templateActive);
 
     if (options.format === "png") {
       const dataUrl = await toPng(element, baseOpts);
@@ -102,7 +96,7 @@ async function captureImage(
 
 export function useExport() {
   const isExporting = ref(false);
-  const { applyTemplateCSS } = useTemplates();
+  const { activeTemplate } = useTemplates();
 
   async function downloadImage(
     element: HTMLElement,
@@ -111,18 +105,8 @@ export function useExport() {
   ): Promise<void> {
     isExporting.value = true;
     try {
-      const clone = cloneElementWithTemplate(element, applyTemplateCSS);
-      document.body.appendChild(clone);
-      clone.style.position = "absolute";
-      clone.style.left = "-9999px";
-      clone.style.top = "-9999px";
-
-      try {
-        const blob = await captureImage(clone, options, theme);
-        triggerDownload(blob, options.format);
-      } finally {
-        document.body.removeChild(clone);
-      }
+      const blob = await captureImage(element, options, theme, !!activeTemplate.value);
+      triggerDownload(blob, options.format);
     } finally {
       isExporting.value = false;
     }
@@ -135,23 +119,13 @@ export function useExport() {
   ): Promise<void> {
     isExporting.value = true;
     try {
-      const clone = cloneElementWithTemplate(element, applyTemplateCSS);
-      document.body.appendChild(clone);
-      clone.style.position = "absolute";
-      clone.style.left = "-9999px";
-      clone.style.top = "-9999px";
-
-      try {
-        const pngBlob = await captureImage(clone, { ...options, format: "png" }, theme);
-        if (!navigator.clipboard?.write) {
-          throw new Error("Clipboard API not supported in this browser");
-        }
-        await navigator.clipboard.write([
-          new ClipboardItem({ "image/png": pngBlob }),
-        ]);
-      } finally {
-        document.body.removeChild(clone);
+      const pngBlob = await captureImage(element, { ...options, format: "png" }, theme, !!activeTemplate.value);
+      if (!navigator.clipboard?.write) {
+        throw new Error("Clipboard API not supported in this browser");
       }
+      await navigator.clipboard.write([
+        new ClipboardItem({ "image/png": pngBlob }),
+      ]);
     } finally {
       isExporting.value = false;
     }
