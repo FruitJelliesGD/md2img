@@ -97,17 +97,11 @@ const overwatchCSS = `
 /* Body text */
 .overwatch-template p {
   font-family: "Config", "Segoe UI", Arial, sans-serif;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 500;
   color: hsla(0, 0%, 100%, 0.9);
   margin-bottom: 1rem;
   line-height: 1.5;
-}
-
-@media (min-width: 720px) {
-  .overwatch-template p {
-    font-size: 20px;
-  }
 }
 
 /* Lists */
@@ -188,10 +182,8 @@ const overwatchCSS = `
 .overwatch-template blockquote {
   border-left: 5px solid #ffab2e;
   padding-left: 15px;
-  font-style: italic;
   color: hsla(0, 0%, 100%, 0.9);
   margin: 15px 0;
-  background-color: rgba(0, 0, 0, 0.1);
   padding: 10px 15px;
   border-radius: 0 4px 4px 0;
 }
@@ -280,7 +272,6 @@ const overwatchCSS = `
   border-left: 5px solid #ffab2e;
   font-weight: 500;
   padding-left: 15px;
-  font-style: italic;
   color: hsla(0, 0%, 100%, 0.9);
   margin: 15px 0;
   background-color: transparent;
@@ -366,7 +357,6 @@ const overwatchCSS = `
   border-left: 5px solid #ffab2e;
   font-weight: 500;
   padding-left: 15px;
-  font-style: italic;
   color: hsla(0, 0%, 100%, 0.9);
   margin: 15px 0;
   background-color: transparent;
