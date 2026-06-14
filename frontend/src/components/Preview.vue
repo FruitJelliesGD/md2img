@@ -10,7 +10,7 @@
       ref="contentRef"
       class="markdown-body mx-auto max-w-4xl"
       :class="activeTemplate ? `${activeTemplate.id}-template` : ''"
-      v-html="html"
+      v-html="wrappedHtml"
     />
   </div>
 </template>
@@ -28,6 +28,13 @@ const props = defineProps<{
 
 const templateStyle = computed(() => {
   return activeTemplate.value ? `<style>${activeTemplate.value.css}</style>` : '';
+});
+
+const wrappedHtml = computed(() => {
+  if (!activeTemplate.value) {
+    return props.html;
+  }
+  return `<div class="${activeTemplate.value.id}-template">${props.html}</div>`;
 });
 
 const previewRef = ref<HTMLDivElement | null>(null);
