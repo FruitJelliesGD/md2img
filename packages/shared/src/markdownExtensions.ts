@@ -98,7 +98,6 @@ const heroBlock = {
     let currentDevNotes: string[] = [];
 
     for (const line of lines) {
-      const abilityMatch = line.match(/^####\s+(.+)/);
       const abilityIconMatch = line.match(/^icon:\s*(.+)/);
 
       if (abilityIconMatch) {
