@@ -34,9 +34,12 @@ function unconstrainElement(el: HTMLElement): () => void {
   const origHeight = el.style.height;
   const origOverflow = el.style.overflow;
   const origMaxHeight = el.style.maxHeight;
+  const origWidth = el.style.width;
 
   const fullHeight = el.scrollHeight;
+  const fullWidth = el.scrollWidth;
   el.style.height = `${fullHeight}px`;
+  el.style.width = `${fullWidth}px`;
   el.style.overflow = "visible";
   el.style.maxHeight = "none";
   void el.offsetHeight;
@@ -45,6 +48,7 @@ function unconstrainElement(el: HTMLElement): () => void {
     el.style.height = origHeight;
     el.style.overflow = origOverflow;
     el.style.maxHeight = origMaxHeight;
+    el.style.width = origWidth;
   };
 }
 

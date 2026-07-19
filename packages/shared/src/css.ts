@@ -91,10 +91,9 @@ export const MARKDOWN_CSS = `
   table {
     border-collapse: collapse;
     border-spacing: 0;
-    display: block;
     width: max-content;
     max-width: 100%;
-    overflow: auto;
+    overflow: visible;
     margin-bottom: 16px;
   }
   table th, table td {
